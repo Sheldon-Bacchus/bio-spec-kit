@@ -1,6 +1,6 @@
 name: candidate-record
 version: 1
-description: Evidence record for one scientific or bioinformatics Agent capability.
+description: 一个科研或生信 Agent 能力的证据记录。
 required:
   - id
   - name

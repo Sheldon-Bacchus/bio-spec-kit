@@ -1,225 +1,191 @@
-# Feature Specification: Scientific and Bioinformatics Skill Research
+# 功能规格：科研与生信 Agent Skill 调研
 
-**Feature Branch**: `001-research-skills`
+**Feature Branch**：001-research-skills
 
-**Created**: 2026-08-26
+**创建日期**：2026-08-26
 
-**Status**: Draft
+**状态**：Draft（草稿）
 
-**Input**: User description: "Research reusable general scientific Agent skills and bioinformatics Agent skills for bio-spec-kit, keeping the two categories separate, and evaluate their quality, ratings, and Agent invocation methods before installation."
+**用户输入**：调研可复用的通用科研 Agent Skill 与生信 Agent Skill，
+保持两类边界分开，并在安装前评估质量、认可度和 Agent 调用方式。
 
-## User Scenarios & Testing *(mandatory)*
+## 用户场景与测试（必需）
 
-### User Story 1 - Separate the research domains (Priority: P1)
+### 用户故事 1：分开两个科研领域（优先级：P1）
 
-As the owner of `bio-spec-kit`, I want one catalog for broad scientific skills
-and one catalog for bioinformatics-specific skills so that a general research
-capability is not confused with a domain execution capability.
+作为 bio-spec-kit 的维护者，我希望有一份“通用科研 Skill”目录和一份
+“生信专用 Skill”目录，这样通用研究能力不会和生信执行能力混在一起。
 
-**Why this priority**: The two catalogs have different users, risks, evidence
-standards, and integration paths. Mixing them makes later preset selection
-unreliable.
+**为什么是这个优先级**：两类 Skill 的用户、风险、证据标准和集成方式
+不同。混在一起会导致后续选择 preset 时出现错误。
 
-**Independent Test**: Review the catalog headings and candidate scope; every
-candidate is assigned to exactly one catalog, and no general-science catalog
-entry is a bioinformatics-only skill.
+**独立测试**：检查目录标题和候选范围；每个候选只能属于一个目录，
+通用科研目录中不能出现只服务于生信的 Skill。
 
-**Acceptance Scenarios**:
+**验收场景**：
 
-1. **Given** the research results are generated, **When** a reviewer opens the
-   catalog, **Then** it contains exactly two named sections: broad scientific
-   skills and bioinformatics skills.
-2. **Given** a candidate focuses on FASTQ, BAM, VCF, RNA-seq, single-cell,
-   variant calling, or an equivalent bioinformatics-only capability, **When**
-   it is classified, **Then** it appears only in the bioinformatics section.
-3. **Given** a candidate focuses on literature, writing, citation management,
-   experiment design, notebooks, or open science across domains, **When** it
-   is classified, **Then** it appears only in the broad scientific section.
+1. **给定** 调研结果已经生成，**当** 审阅者打开目录，**那么** 必须看到
+   两个且仅两个明确分区：通用科研 Skill、生信 Skill。
+2. **给定** 某个候选主要处理 FASTQ、BAM、VCF、RNA-seq、单细胞、变异
+   calling 或其他生信专用能力，**当** 对它分类，**那么** 它只能出现在
+   生信目录。
+3. **给定** 某个候选主要处理文献、写作、引用管理、实验设计、Notebook
+   或开放科学，**当** 对它分类，**那么** 它只能出现在通用科研目录。
 
-### User Story 2 - Compare Agent-callable skills with evidence (Priority: P1)
+### 用户故事 2：带证据比较可被 Agent 调用的 Skill（优先级：P1）
 
-As a researcher, I want each candidate to show how an Agent can invoke it and
-what evidence supports its quality so that I can distinguish a usable skill
-from a promising description or research prototype.
+作为科研人员，我希望每个候选都说明 Agent 如何调用它，以及有哪些证据
+支持其质量，这样我能区分真正可用的 Skill、概念描述和科研原型。
 
-**Why this priority**: Agent invocation is the user's stated selection factor;
-stars alone do not establish scientific or operational quality.
+**为什么是这个优先级**：Agent 调用方式是本项目的核心选择因素；GitHub
+star 数量本身不能证明科学质量或运行质量。
 
-**Independent Test**: Select any five candidates from either catalog and verify
-that each has a source URL, invocation mechanism, maintenance signal, license
-status, documentation/test signal, security note, and score or an explicit
-reason for exclusion.
+**独立测试**：从任一目录任取 5 个候选，检查每个候选是否有来源 URL、
+调用方式、维护信号、许可证状态、文档/测试信号、安全说明和评分；如果
+没有评分，必须有明确的排除原因。
 
-**Acceptance Scenarios**:
+**验收场景**：
 
-1. **Given** a candidate exposes a `SKILL.md`, CLI, MCP server, API, notebook,
-   or workflow wrapper, **When** it is recorded, **Then** the exact invocation
-   class and required inputs/outputs are stated.
-2. **Given** GitHub stars, forks, releases, or commit activity cannot be
-   verified, **When** the candidate is scored, **Then** the field is marked
-   unverified rather than estimated.
-3. **Given** a candidate has a permissive license but executes code or sends
-   data to external services, **When** it is evaluated, **Then** those risks
-   are visible beside the recommendation.
+1. **给定** 候选提供 SKILL.md、CLI、MCP server、API、Notebook 或 workflow
+   wrapper，**当** 记录它时，**那么** 必须写明调用类型以及所需输入/输出。
+2. **给定** GitHub stars、forks、release 或 commit 活跃度无法核实，
+   **当** 对候选评分时，**那么** 必须标记为“未核实”，不能自行估算。
+3. **给定** 候选使用宽松许可证，但会执行代码或向外部服务发送数据，
+   **当** 对它评估时，**那么** 这些风险必须和推荐结论放在一起。
 
-### User Story 3 - Select candidates without bypassing scientific gates (Priority: P1)
+### 用户故事 3：不绕过科研质量门选择候选（优先级：P1）
 
-As a project maintainer, I want a repeatable score and admission rule so that
-only candidates with sufficient quality, maintenance, safety, and Spec Kit fit
-enter a preset, extension, bundle, or adapter.
+作为项目维护者，我希望有一套可重复的评分与准入规则，使进入 preset、
+extension、bundle 或 adapter 的候选具备足够的质量、维护、安全和
+Spec Kit 适配性。
 
-**Why this priority**: The project will be reused by multiple projects, teams,
-and Agents; an undocumented import decision would become a supply-chain and
-scientific-quality risk.
+**为什么是这个优先级**：本项目将被多个项目、团队和 Agent 重复使用；
+没有记录的引入决定会形成供应链风险和科研质量风险。
 
-**Independent Test**: Re-score a candidate from its evidence record and obtain
-the same tier and integration recommendation without relying on hidden context.
+**独立测试**：只根据候选证据记录重新评分，并得到相同的集成层级和推荐
+结论，不依赖隐藏上下文。
 
-**Acceptance Scenarios**:
+**验收场景**：
 
-1. **Given** a candidate scores at least 4.0/5 and has no critical license or
-   data-handling failure, **When** it is reviewed, **Then** it may be marked
-   preferred for a controlled pilot.
-2. **Given** a candidate is a research prototype, has missing license evidence,
-   or lacks a reproducible invocation contract, **When** it is reviewed, **Then**
-   it is marked reference-only or pilot-only rather than core.
-3. **Given** a candidate would execute a pipeline or write to an external
-   service, **When** it is proposed for integration, **Then** the proposal
-   includes a QC, provenance, and human-approval boundary.
+1. **给定** 候选评分至少为 4.0/5，且没有关键许可证或数据处理失败项，
+   **当** 审阅它时，**那么** 可以标记为受控试点首选。
+2. **给定** 候选属于科研原型、许可证证据缺失，或没有可重复的调用合同，
+   **当** 审阅它时，**那么** 必须标记为仅供参考或需要封装，而不能直接
+   进入核心 bundle。
+3. **给定** 候选会执行 pipeline 或写入外部服务，**当** 提议集成它时，
+   **那么** 提案必须包含 QC、provenance 和人工审批边界。
 
-### User Story 4 - Map findings to Spec Kit integration points (Priority: P2)
+### 用户故事 4：把调研结果映射到 Spec Kit 集成点（优先级：P2）
 
-As a maintainer, I want each recommended candidate mapped to a preset,
-extension, bundle, or external adapter so that the next implementation phase
-can be planned without copying an entire upstream repository.
+作为维护者，我希望每个推荐候选都映射到 preset、extension、bundle 或
+外部 adapter，这样下一阶段可以直接制定实现计划，而不必复制整个上游
+仓库。
 
-**Why this priority**: Research is useful only when it produces a safe,
-bounded path to reuse.
+**为什么是这个优先级**：调研只有转化为安全、边界清晰的复用路径才有价值。
 
-**Independent Test**: For every preferred candidate, a reviewer can identify
-whether it is directly usable, needs a wrapper, is reference-only, or is
-excluded, and can see the next Spec Kit artifact to create.
+**独立测试**：对于每个首选候选，审阅者都能判断它是可直接使用、需要
+wrapper、仅供参考还是排除，并能找到下一步要创建的 Spec Kit 产物。
 
-**Acceptance Scenarios**:
+**验收场景**：
 
-1. **Given** a candidate is recommended, **When** the integration map is read,
-   **Then** it names one bounded integration target and its required gates.
-2. **Given** a candidate is not suitable for the core bundle, **When** the map
-   is read, **Then** it explains whether the reason is scope, license, safety,
-   maintenance, or missing evidence.
+1. **给定** 某个候选被推荐，**当** 阅读集成映射时，**那么** 必须看到一个
+   明确的集成目标和所需质量门。
+2. **给定** 某候选不适合放进核心 bundle，**当** 阅读映射时，**那么** 必须
+   说明原因是范围、许可证、安全、维护状态还是证据不足。
 
-### Edge Cases
+### 边界情况
 
-- A repository has high stars but no recent maintenance, tests, license clarity,
-  or safe execution boundary; stars MUST NOT be treated as the decision alone.
-- A project contains both general scientific and bioinformatics skills; each
-  individual skill MUST be classified, not the repository copied as one unit.
-- A candidate's documentation describes Agent invocation but does not provide a
-  deterministic input/output contract; it MUST be marked wrapper-needed.
-- A source reports different star or release values across pages; the catalog
-  MUST retain the observation date and mark conflicting values for recheck.
-- A skill may contact an external API or receive human genomic/clinical data;
-  it MUST be excluded from default execution until data-flow and permission
-  review are complete.
-- A candidate has no reliably verified license; it MUST NOT enter the default
-  bundle, even if its scientific utility is high.
+- 某仓库 star 很高，但维护停滞、没有测试、许可证不清楚或执行边界不安全；
+  star 不能作为唯一决定因素。
+- 某项目同时包含通用科研和生信 Skill；必须按单个 Skill 或能力分类，
+  不能把整个仓库一次性复制进来。
+- 文档描述了 Agent 调用方式，但没有确定性的输入/输出合同；必须标记为
+  wrapper-needed。
+- 不同页面给出了不同的 star 或 release 数值；目录必须保留观察日期，
+  并标记为需要复核。
+- Skill 可能访问外部 API，或接收人类基因组/临床数据；在完成数据流和
+  权限审查前，必须禁止默认执行。
+- 候选没有可靠的许可证证据；即使科学价值很高，也不能进入默认 bundle。
 
-## Requirements *(mandatory)*
+## 需求（必需）
 
-### Functional Requirements
+### 功能需求
 
-- **FR-001**: The research artifact MUST contain exactly two disjoint candidate
-  catalogs: `scientific-general` and `bioinformatics`.
-- **FR-002**: `scientific-general` MUST be limited to cross-domain research
-  capabilities such as literature, writing, citation management, experiment
-  design, statistical reasoning, notebooks, knowledge management, or open
-  science; it MUST exclude bioinformatics-only execution skills.
-- **FR-003**: `bioinformatics` MUST contain only bioinformatics-specific skills,
-  Agent libraries, or executable capabilities that can be bounded as a
-  bioinformatics skill.
-- **FR-004**: Every candidate record MUST include its canonical source URL,
-  scope, Agent invocation class, required inputs, expected outputs, license
-  status, maintenance signal, documentation/test signal, security and privacy
-  concerns, and observation date.
-- **FR-005**: Adoption signals MUST distinguish verified stars/forks/releases/
-  commits from values that could not be verified; missing evidence MUST NOT be
-  filled by inference.
-- **FR-006**: The score MUST be reproducible on a 0-5 scale using these weights:
-  Agent invocation contract 20%, scientific utility 20%, maintenance and
-  adoption 15%, documentation and tests 15%, license 10%, security/privacy
-  boundary 10%, and Spec Kit fit 10%.
-- **FR-007**: A candidate MUST receive one of four integration tiers:
-  `preferred-pilot`, `wrapper-needed`, `reference-only`, or `exclude`.
-- **FR-008**: A candidate MUST NOT receive `preferred-pilot` when it has an
-  unresolved critical license issue, undisclosed sensitive-data transfer,
-  unsafe default execution, or no reproducible invocation path.
-- **FR-009**: Each `preferred-pilot` recommendation MUST name a bounded Spec Kit
-  target and specify the required QC, statistical, provenance, and human-review
-  gates.
-- **FR-010**: Discovery MUST NOT install, execute, or upload project data to a
-  third-party candidate by default; installation or execution MUST be a later,
-  explicitly approved implementation task.
-- **FR-011**: The research artifact MUST preserve source links for the following
-  initial candidates and record their status rather than silently dropping them:
-  PaperQA2, AI4S Skills, Scientific Agent Skills, Zotero MCP, OpenAlex MCP,
-  Quarto, Jupyter Book, AutoRA, OSF API, GPTomics/bioSkills, ClawBio, Hermes
-  Agent bioinformatics skill, bioinformatics-agent-skills, nf-core/rnaseq,
-  nf-core/sarek, nf-core/scrnaseq, nf-core/seqinspector, MultiQC,
-  sc-best-practices, and CellAgent.
-- **FR-012**: The artifact MUST include a concise decision summary identifying
-  the first candidates to evaluate in a controlled pilot and the evidence gaps
-  that must be closed before a core bundle release.
+- **FR-001**：调研产物必须包含两个互不重叠的候选目录：
+  scientific-general 和 bioinformatics。
+- **FR-002**：scientific-general 只能包含跨领域科研能力，例如文献、写作、
+  引用管理、实验设计、统计推理、Notebook、知识管理和开放科学；必须排除
+  生信专用执行 Skill。
+- **FR-003**：bioinformatics 只能包含生信专用 Skill、生信 Agent library，
+  或可以被约束为生信 Skill 的可执行能力。
+- **FR-004**：每个候选记录必须包含 canonical source URL、范围、Agent 调用
+  类型、所需输入、预期输出、许可证状态、维护信号、文档/测试信号、
+  安全与隐私风险以及观察日期。
+- **FR-005**：采用度信号必须区分已核实的 stars/forks/releases/commits 和
+  未能核实的数值；缺失证据不得靠推测补齐。
+- **FR-006**：评分必须使用 0-5 分制，并按以下权重可重复计算：Agent
+  调用合同 20%、科研价值 20%、维护与采用度 15%、文档与测试 15%、
+  许可证 10%、安全与隐私边界 10%、Spec Kit 适配性 10%。
+- **FR-007**：每个候选必须被分到以下四个集成层级之一：
+  preferred-pilot、wrapper-needed、reference-only、exclude。
+- **FR-008**：当候选存在未解决的关键许可证问题、未披露的敏感数据传输、
+  不安全的默认执行行为或不可重复的入口时，不得标记为 preferred-pilot。
+- **FR-009**：每个 preferred-pilot 推荐必须指定一个边界清晰的 Spec Kit
+  目标，并写明 QC、统计、provenance 和人工审阅门。
+- **FR-010**：调研默认不得安装、执行第三方候选，也不得向候选上传项目
+  数据；安装或执行必须作为之后单独批准的实现任务。
+- **FR-011**：调研产物必须保留以下初始候选的来源链接并记录状态，不得
+  静默删除：PaperQA2、AI4S Skills、Scientific Agent Skills、Zotero MCP、
+  OpenAlex MCP、Quarto、Jupyter Book、AutoRA、OSF API、GPTomics/bioSkills、
+  ClawBio、Hermes Agent bioinformatics skill、bioinformatics-agent-skills、
+  nf-core/rnaseq、nf-core/sarek、nf-core/scrnaseq、nf-core/seqinspector、
+  MultiQC、sc-best-practices 和 CellAgent。
+- **FR-012**：调研产物必须包含简洁的决策摘要，说明第一批受控试点候选，
+  以及核心 bundle 发布前必须补齐的证据缺口。
 
-### Key Entities
+### 关键实体
 
-- **Candidate Skill**: A repository, package, skill file, service, or workflow
-  capability evaluated for reuse in one of the two domains.
-- **Evidence Record**: Source links, observation date, version or commit,
-  adoption signal, license status, maintenance signal, and quality evidence.
-- **Invocation Contract**: Agent-facing description of how the capability is
-  called, its inputs, outputs, side effects, permissions, and failure behavior.
-- **Scoring Record**: Weighted category scores, total score, confidence, and
-  integration tier.
-- **Integration Recommendation**: A bounded mapping to a Spec Kit preset,
-  extension, bundle, adapter, or a documented exclusion.
+- **Candidate Skill（候选 Skill）**：评估是否可复用的仓库、包、Skill 文件、
+  服务或 workflow 能力。
+- **Evidence Record（证据记录）**：来源链接、观察日期、版本或 commit、
+  采用度信号、许可证状态、维护信号和质量证据。
+- **Invocation Contract（调用合同）**：描述 Agent 如何调用能力，包括输入、
+  输出、副作用、权限和失败行为。
+- **Scoring Record（评分记录）**：加权评分、总分、置信度和集成层级。
+- **Integration Recommendation（集成建议）**：映射到 Spec Kit preset、
+  extension、bundle、adapter 或明确排除。
 
-## Success Criteria *(mandatory)*
+## 成功标准（必需）
 
-### Measurable Outcomes
+### 可衡量结果
 
-- **SC-001**: The first research snapshot contains at least 6 broad scientific
-  candidates and at least 8 bioinformatics candidates, with no cross-domain
-  classification errors found in a two-person review.
-- **SC-002**: 100% of candidates retained in either catalog have a source URL,
-  invocation class, license status, maintenance status, security note, score,
-  and observation date, or are explicitly marked evidence-incomplete.
-- **SC-003**: 100% of candidates recommended for a controlled pilot have a
-  documented input/output contract and a stated QC, provenance, and review
-  boundary before installation begins.
-- **SC-004**: At least 80% of the top-tier recommendations score 4.0/5 or higher
-  and have no unresolved critical admission failure.
-- **SC-005**: A maintainer can reproduce the catalog classification and tier
-  decision for any selected candidate in under 10 minutes using only the
-  recorded evidence and scoring rubric.
-- **SC-006**: No discovery run installs a third-party skill, executes an
-  unreviewed external command, or transfers project data without an explicit
-  implementation approval record.
+- **SC-001**：第一版调研快照至少包含 6 个通用科研候选和 8 个生信候选，
+  且两人复核没有跨领域分类错误。
+- **SC-002**：两个目录中保留的候选，100% 具有来源 URL、调用类型、许可证
+  状态、维护状态、安全说明、评分和观察日期，或明确标记为证据不完整。
+- **SC-003**：推荐进入受控试点的候选，100% 在安装前具有输入/输出合同，
+  并明确 QC、provenance 和人工审阅边界。
+- **SC-004**：至少 80% 的最高层级推荐评分达到 4.0/5 或以上，且没有未解决
+  的关键准入失败项。
+- **SC-005**：维护者只使用已记录的证据和评分规则，即可在 10 分钟内复现
+  任一候选的分类和集成层级决定。
+- **SC-006**：任何调研运行都不得在没有实现批准记录的情况下安装第三方
+  Skill、执行未审查的外部命令或传输项目数据。
 
-## Assumptions
+## 假设
 
-- “高薪、高评分” means high quality and high recognition/maintenance signals;
-  the project will not treat GitHub stars as a substitute for scientific merit.
-- The first snapshot is an evidence review as of 2026-08-26; volatile stars,
-  releases, and commit activity must be rechecked before installation.
-- A repository that contains both general and bioinformatics capabilities will
-  be evaluated at the individual skill or capability level where possible.
-- Public data and read-only operation are the default for external integrations.
-- Spec Kit remains the coordination, evidence, gate, and provenance layer;
-  domain tools remain responsible for domain execution.
+- “高薪、高评分”按“高质量、高认可度和高维护信号”理解；GitHub stars
+  不能替代科研价值判断。
+- 第一版是截至 2026-08-26 的证据快照；安装前必须重新核实会变化的
+  stars、releases 和 commit 活跃度。
+- 同一仓库同时包含两类能力时，尽量按单个 Skill 或能力分别评估。
+- 外部集成默认使用公共数据和只读操作。
+- Spec Kit 负责协调、证据、质量门和 provenance；领域工具负责真正的
+  生信或科研计算。
 
-## Initial Evidence Sources
+## 初始证据来源
 
-### Broad scientific skills
+### 通用科研 Skill
 
 - [PaperQA2](https://github.com/Future-House/paper-qa)
 - [AI4S Skills](https://github.com/ai4s-research/ai4s-skills)
@@ -231,7 +197,7 @@ excluded, and can see the next Spec Kit artifact to create.
 - [AutoRA](https://github.com/AutoResearch/autora)
 - [OSF API](https://developer.osf.io/)
 
-### Bioinformatics skills and bounded capabilities
+### 生信 Skill 与受约束的生信能力
 
 - [GPTomics/bioSkills](https://github.com/GPTomics/bioSkills)
 - [ClawBio](https://github.com/ClawBio/ClawBio)

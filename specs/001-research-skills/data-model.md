@@ -1,103 +1,101 @@
-# Data Model: Skill Research Catalog
+# 数据模型：Skill 调研目录
 
-## CandidateSkill
+## CandidateSkill（候选 Skill）
 
-Represents one externally sourced skill, Agent package, service, or bounded
-bioinformatics capability.
+表示一个外部 Skill、Agent package、服务或边界清晰的生信能力。
 
-| Field | Required | Rules |
+| 字段 | 必需 | 规则 |
 |---|---|---|
-| id | yes | Stable lowercase identifier; do not use a mutable display name |
-| name | yes | Human-readable upstream name |
-| domain | yes | Exactly scientific-general or bioinformatics |
-| source_url | yes | Canonical repository, documentation, paper, or API URL |
-| scope | yes | Capabilities included and explicitly excluded |
-| invocation_class | yes | skill-file, cli, mcp, api, notebook, pipeline-wrapper, or knowledge-reference |
-| status | yes | candidate, reviewed, superseded, or excluded |
-| observation_date | yes | ISO date for volatile evidence |
+| id | 是 | 稳定的小写标识符；不要使用会变化的显示名称 |
+| name | 是 | 上游项目的人类可读名称 |
+| domain | 是 | 只能是 scientific-general 或 bioinformatics |
+| source_url | 是 | 官方仓库、文档、论文或 API 地址 |
+| scope | 是 | 明确包含和排除的能力 |
+| invocation_class | 是 | skill-file、cli、mcp、api、notebook、pipeline-wrapper 或 knowledge-reference |
+| status | 是 | candidate、reviewed、superseded 或 excluded |
+| observation_date | 是 | 变化性证据的 ISO 日期 |
 
-## EvidenceRecord
+## EvidenceRecord（证据记录）
 
-Records why a candidate is considered credible or why evidence is incomplete.
+记录为什么认为候选可信，或者为什么证据仍然不完整。
 
-| Field | Required | Rules |
+| 字段 | 必需 | 规则 |
 |---|---|---|
-| version_or_commit | no | Release, tag, commit, paper version, or unverified |
-| stars | no | Numeric only when observed from a reliable source; otherwise unverified |
-| forks | no | Numeric only when observed from a reliable source; otherwise unverified |
-| maintenance_signal | yes | recent, intermittent, stale, or unknown with explanation |
-| license | yes | SPDX-like identifier, mixed, missing, or needs-review |
-| documentation_signal | yes | mature, usable, partial, or weak |
-| test_signal | yes | contract-tests, CI, examples-only, absent, or unknown |
-| sources | yes | One or more URLs supporting the record |
-| confidence | yes | high, medium, or low |
-| evidence_notes | yes | Short, auditable explanation; no unsupported claims |
+| version_or_commit | 否 | release、tag、commit、论文版本或 unverified |
+| stars | 否 | 只有从可靠来源观察到数字时才填写，否则为 unverified |
+| forks | 否 | 只有从可靠来源观察到数字时才填写，否则为 unverified |
+| maintenance_signal | 是 | recent、intermittent、stale 或 unknown，并说明原因 |
+| license | 是 | SPDX 风格标识、mixed、missing 或 needs-review |
+| documentation_signal | 是 | mature、usable、partial 或 weak |
+| test_signal | 是 | contract-tests、CI、examples-only、absent 或 unknown |
+| sources | 是 | 支撑该记录的一个或多个 URL |
+| confidence | 是 | high、medium 或 low |
+| evidence_notes | 是 | 简短、可审计的说明；不得写无证据的结论 |
 
-## InvocationContract
+## InvocationContract（调用合同）
 
-Describes how an Agent may call the capability without guessing.
+说明 Agent 如何调用能力而不需要自行猜测。
 
-| Field | Required | Rules |
+| 字段 | 必需 | 规则 |
 |---|---|---|
-| entrypoint | yes | Skill path, command, MCP tool, API operation, or reference action |
-| input_schema | yes | Files, identifiers, metadata, and required reference resources |
-| output_schema | yes | Expected files, records, reports, or assertions |
-| side_effects | yes | none, local-files, network-read, network-write, external-write, or execution |
-| permissions | yes | Minimum filesystem, network, credential, and write permissions |
-| failure_policy | yes | stop, report-and-review, retry-bounded, or reference-only |
-| provenance_outputs | yes | Versions, commands, parameters, logs, hashes, and source metadata |
-| human_gate | yes | Gate name and approval requirement before release or external write |
+| entrypoint | 是 | Skill 路径、命令、MCP tool、API 操作或参考动作 |
+| input_schema | 是 | 文件、标识符、元数据和必需的参考资源 |
+| output_schema | 是 | 预期文件、记录、报告或断言 |
+| side_effects | 是 | none、local-files、network-read、network-write、external-write 或 execution |
+| permissions | 是 | 最小文件系统、网络、凭据和写入权限 |
+| failure_policy | 是 | stop、report-and-review、retry-bounded 或 reference-only |
+| provenance_outputs | 是 | 版本、命令、参数、日志、hash 和来源元数据 |
+| human_gate | 是 | 发布或外部写入前所需的质量门和审批要求 |
 
-## ScoreRecord
+## ScoreRecord（评分记录）
 
-Stores the reproducible weighted assessment.
+保存可重复计算的加权评估结果。
 
-| Field | Required | Rules |
+| 字段 | 必需 | 规则 |
 |---|---|---|
-| invocation_score | yes | 0-5 |
-| utility_score | yes | 0-5 |
-| maintenance_adoption_score | yes | 0-5 |
-| docs_tests_score | yes | 0-5 |
-| license_score | yes | 0-5; unresolved license cannot score above 2 |
-| safety_score | yes | 0-5; undisclosed sensitive-data transfer is a critical failure |
-| speckit_fit_score | yes | 0-5 |
-| total_score | yes | Weighted result on 0-5 scale |
-| confidence | yes | high, medium, or low |
-| critical_failures | yes | Empty list when none |
-| reviewer | yes | Agent or human reviewer identifier |
-| scored_date | yes | ISO date |
+| invocation_score | 是 | 0-5 |
+| utility_score | 是 | 0-5 |
+| maintenance_adoption_score | 是 | 0-5 |
+| docs_tests_score | 是 | 0-5 |
+| license_score | 是 | 0-5；许可证未解决时不能高于 2 |
+| safety_score | 是 | 0-5；未披露的敏感数据传输属于关键失败 |
+| speckit_fit_score | 是 | 0-5 |
+| total_score | 是 | 加权后的 0-5 总分 |
+| confidence | 是 | high、medium 或 low |
+| critical_failures | 是 | 没有关键失败时为空列表 |
+| reviewer | 是 | Agent 或人工审阅者标识 |
+| scored_date | 是 | ISO 日期 |
 
-## IntegrationRecommendation
+## IntegrationRecommendation（集成建议）
 
-Maps a candidate to a bounded next action.
+把候选映射到边界清晰的下一步动作。
 
-| Tier | Meaning |
+| 层级 | 含义 |
 |---|---|
-| preferred-pilot | Evidence is sufficient for a controlled public-data pilot; not yet a default core dependency |
-| wrapper-needed | Useful capability, but the project must add schemas, permissions, gates, or provenance |
-| reference-only | Use documentation, methods, or prompt structure; do not execute as a dependency |
-| exclude | Scope, safety, license, evidence, or maintenance failure blocks reuse |
+| preferred-pilot | 证据足以进行受控公共数据试点；尚不是默认核心依赖 |
+| wrapper-needed | 能力有价值，但项目必须补充 schema、权限、质量门或 provenance |
+| reference-only | 只使用文档、方法或 prompt 结构；不作为依赖执行 |
+| exclude | 范围、安全、许可证、证据或维护失败，禁止复用 |
 
-Required fields:
+必需字段：
 
-- target_type: preset, extension, bundle, adapter, checklist, or none
+- target_type：preset、extension、bundle、adapter、checklist 或 none
 - target_name
 - required_gates
 - evidence_gaps
-- approval_state: proposed, approved-for-pilot, or rejected
+- approval_state：proposed、approved-for-pilot 或 rejected
 
-## Relationships and Lifecycle
+## 关系与生命周期
 
-CandidateSkill 1-to-many EvidenceRecord
-CandidateSkill 1-to-1 InvocationContract
-CandidateSkill 1-to-1 ScoreRecord
-CandidateSkill 1-to-1 IntegrationRecommendation
+CandidateSkill 一对多 EvidenceRecord
+CandidateSkill 一对一 InvocationContract
+CandidateSkill 一对一 ScoreRecord
+CandidateSkill 一对一 IntegrationRecommendation
 
-Lifecycle:
+生命周期：
 
-candidate → evidence-collected → scored → reviewed → approved-for-pilot or
-reference-only/excluded → superseded
+candidate → evidence-collected → scored → reviewed →
+approved-for-pilot 或 reference-only/excluded → superseded
 
-No candidate may move to approved-for-pilot without a complete invocation
-contract, no critical safety or license failure, and an identified human review
-gate.
+候选只有在调用合同完整、没有关键安全或许可证失败，并且已经确定人工
+审阅门之后，才能进入 approved-for-pilot。

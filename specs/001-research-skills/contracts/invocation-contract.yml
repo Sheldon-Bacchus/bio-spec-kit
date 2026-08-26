@@ -1,6 +1,6 @@
 name: invocation-contract
 version: 1
-description: Agent-facing contract for calling an approved or pilot capability.
+description: 面向 Agent 的调用合同，用于调用已批准或进入试点的能力。
 required:
   - entrypoint
   - input_schema
@@ -13,7 +13,7 @@ required:
 properties:
   entrypoint:
     type: string
-    description: Exact skill path, command, MCP operation, API operation, or reference action.
+    description: 确切的 Skill 路径、命令、MCP 操作、API 操作或参考动作。
   input_schema:
     type: object
     required:

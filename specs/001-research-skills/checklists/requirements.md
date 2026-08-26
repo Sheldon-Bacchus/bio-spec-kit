@@ -1,48 +1,45 @@
-# Specification Quality Checklist: Scientific and Bioinformatics Skill Research
+# 规格质量清单：科研与生信 Skill 调研
 
-**Purpose**: Validate that the two-domain research specification is complete,
-testable, evidence-oriented, and ready for planning.
+**目的**：验证两个领域的调研规格是否完整、可测试、以证据为基础，
+并且可以进入 plan 阶段。
 
-**Created**: 2026-08-26
+**创建日期**：2026-08-26
 
-**Feature**: [spec.md](../spec.md)
+**Feature**：[spec.md](../spec.md)
 
-## Content Quality
+## 内容质量
 
-- [x] No implementation details are required to understand the user value.
-- [x] The specification separates broad scientific research from bioinformatics.
-- [x] The specification explains why Agent invocation evidence matters.
-- [x] All mandatory Spec Kit sections are completed.
+- [x] 不需要了解具体实现细节，也能理解用户价值。
+- [x] 规格明确区分通用科研和生信。
+- [x] 规格解释了为什么必须记录 Agent 调用证据。
+- [x] Spec Kit 的必需章节全部完成。
 
-## Requirement Completeness
+## 需求完整性
 
-- [x] No unresolved clarification markers remain.
-- [x] Requirements are testable and use bounded language.
-- [x] Success criteria are measurable and technology-agnostic where possible.
-- [x] Acceptance scenarios cover classification, evidence, scoring, and mapping.
-- [x] Edge cases include missing metrics, mixed repositories, unsafe execution,
-  and unclear licensing.
-- [x] Scope boundaries and non-goals are explicit.
-- [x] Assumptions and dependencies are identified.
+- [x] 没有未解决的澄清标记。
+- [x] 需求可测试，并且使用了边界清晰的表述。
+- [x] 成功标准可衡量，并尽量与具体技术无关。
+- [x] 验收场景覆盖分类、证据、评分和集成映射。
+- [x] 边界情况包含指标缺失、混合仓库、不安全执行和许可证不清晰。
+- [x] 明确了范围边界和非目标。
+- [x] 识别了假设与依赖。
 
-## Evidence and Safety
+## 证据与安全
 
-- [x] Candidate records require canonical source links and observation dates.
-- [x] Unverified stars, releases, and maintenance signals are not inferred.
-- [x] License, network, sensitive-data, and execution risks are explicit.
-- [x] Discovery is read-only and does not authorize third-party installation.
-- [x] Preferred candidates require an invocation contract and QC/provenance/
-  human-review boundary.
+- [x] 候选记录要求 canonical source link 和观察日期。
+- [x] 不对未核实的 stars、release 和维护信号进行推测。
+- [x] 明确许可证、网络、敏感数据和执行风险。
+- [x] 调研是只读的，不授权安装第三方 Skill。
+- [x] preferred-pilot 候选必须有调用合同以及 QC/provenance/人工审阅边界。
 
-## Feature Readiness
+## Feature 就绪度
 
-- [x] User stories are independently testable and prioritized.
-- [x] Functional requirements map to acceptance scenarios and success criteria.
-- [x] Initial evidence sources are listed for both catalogs.
-- [x] The next implementation phase has bounded integration tiers.
+- [x] 用户故事已经按优先级排列，并且可以独立测试。
+- [x] 功能需求与验收场景和成功标准对应。
+- [x] 两个目录都有初始证据来源。
+- [x] 下一阶段具有边界清晰的集成层级。
 
-## Notes
+## 备注
 
-- This checklist validates requirements quality only; it does not approve any
-  third-party skill for installation.
-- The volatile adoption fields must be refreshed before a controlled pilot.
+- 本清单只验证需求质量，不代表批准安装任何第三方 Skill。
+- 进入受控试点前，必须重新刷新会变化的采用度字段。

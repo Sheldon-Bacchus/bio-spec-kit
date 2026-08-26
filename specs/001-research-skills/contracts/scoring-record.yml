@@ -1,6 +1,6 @@
 name: scoring-record
 version: 1
-description: Weighted 0-5 assessment for a candidate capability.
+description: 对候选能力进行加权的 0-5 分评估。
 weights:
   invocation_contract: 0.20
   scientific_utility: 0.20
