@@ -1,0 +1,6 @@
+{
+  "total_reads": {"min": 1000000},
+  "mean_q30": {"min": 85},
+  "mapping_rate": {"min": 0.8}
+}
+

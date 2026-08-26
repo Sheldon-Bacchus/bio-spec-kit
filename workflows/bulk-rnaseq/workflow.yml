@@ -1,0 +1,85 @@
+schema_version: "1.0"
+
+workflow:
+  id: "bulk-rnaseq"
+  name: "Bulk RNA-seq Evidence-First Lifecycle"
+  version: "0.1.0"
+  author: "Sheldon-Bacchus"
+  description: "Intake, QC, execution, provenance, and release gates for bulk RNA-seq."
+
+requires:
+  speckit_version: ">=0.14.0"
+  integrations:
+    any: ["claude", "codex", "copilot", "generic"]
+
+inputs:
+  engine:
+    type: string
+    required: true
+    default: "skip"
+    enum: ["skip", "nextflow", "snakemake"]
+    prompt: "Pipeline engine"
+  intake_verdict:
+    type: string
+    default: ""
+    enum: ["", "approve", "reject"]
+  qc_verdict:
+    type: string
+    default: ""
+    enum: ["", "approve", "reject"]
+  release_verdict:
+    type: string
+    default: ""
+    enum: ["", "approve", "reject"]
+
+steps:
+  - id: intake-check
+    type: shell
+    run: "python .specify/extensions/bio-intake/scripts/validate.py --manifest .bio/manifest.json --samples .bio/samples.tsv --output .bio/runs/current/intake"
+
+  - id: intake-review
+    type: gate
+    message: "Review .bio/runs/current/intake/intake-report.md before analysis."
+    show_file: ".bio/runs/current/intake/intake-report.md"
+    options: [approve, reject]
+    on_reject: abort
+    verdict_input: intake_verdict
+
+  - id: intake-record
+    type: shell
+    run: "python .specify/extensions/bio-review/scripts/record_approval.py --stage intake --decision \"{{ steps.intake-review.output.choice }}\" --evidence .bio/runs/current/intake/intake-verdict.json"
+
+  - id: qc-check
+    type: shell
+    run: "python .specify/extensions/bio-qc/scripts/run_qc.py --metrics .bio/qc/metrics.json --thresholds .bio/qc/thresholds.json --output .bio/runs/current/qc"
+
+  - id: qc-review
+    type: gate
+    message: "Review .bio/runs/current/qc/qc-report.md before pipeline execution."
+    show_file: ".bio/runs/current/qc/qc-report.md"
+    options: [approve, reject]
+    on_reject: abort
+    verdict_input: qc_verdict
+
+  - id: qc-record
+    type: shell
+    run: "python .specify/extensions/bio-review/scripts/record_approval.py --stage qc --decision \"{{ steps.qc-review.output.choice }}\" --evidence .bio/runs/current/qc/qc-verdict.json"
+
+  - id: pipeline
+    type: shell
+    run: "python .specify/extensions/bio-pipeline/scripts/run_pipeline.py --engine {{ inputs.engine }} --output .bio/runs/current/pipeline"
+
+  - id: provenance
+    type: shell
+    run: "python .specify/extensions/bio-provenance/scripts/collect.py --output .bio/runs/current/provenance"
+
+  - id: release-review
+    type: gate
+    message: "Review pipeline verdict and provenance before release."
+    options: [approve, reject]
+    on_reject: abort
+    verdict_input: release_verdict
+
+  - id: release-record
+    type: shell
+    run: "python .specify/extensions/bio-review/scripts/record_approval.py --stage release --decision \"{{ steps.release-review.output.choice }}\" --evidence .bio/runs/current/pipeline/pipeline-verdict.json --evidence .bio/runs/current/provenance/provenance.json"

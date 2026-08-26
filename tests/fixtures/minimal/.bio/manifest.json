@@ -1,0 +1,10 @@
+{
+  "project_id": "demo-rnaseq",
+  "assay": "bulk-rnaseq",
+  "reference": "GRCh38-release-110",
+  "pipeline": "demo-pipeline-v0.1.0",
+  "inputs": {
+    "source": "synthetic-fixture"
+  }
+}
+

@@ -1,0 +1,45 @@
+schema_version: "1.0"
+
+bundle:
+  id: "bioinformatics-core"
+  name: "Bioinformatics Core"
+  version: "0.1.0"
+  role: "bioinformatics"
+  description: "Evidence-first Spec Kit stack for reproducible bioinformatics."
+  author: "Sheldon-Bacchus"
+  license: "MIT"
+  homepage: "https://github.com/Sheldon-Bacchus/bio-spec-kit"
+  repository: "https://github.com/Sheldon-Bacchus/bio-spec-kit"
+
+requires:
+  speckit_version: ">=0.14.0"
+  tools: []
+  mcp: []
+
+provides:
+  presets:
+    - id: "bioinformatics"
+      version: "0.1.0"
+      priority: 10
+      strategy: "replace"
+  extensions:
+    - id: "bio-intake"
+      version: "0.1.0"
+    - id: "bio-qc"
+      version: "0.1.0"
+    - id: "bio-pipeline"
+      version: "0.1.0"
+    - id: "bio-provenance"
+      version: "0.1.0"
+    - id: "bio-review"
+      version: "0.1.0"
+  workflows:
+    - id: "bulk-rnaseq"
+      version: "0.1.0"
+
+tags:
+  - "bioinformatics"
+  - "reproducibility"
+  - "quality-gate"
+  - "bulk-rnaseq"
+

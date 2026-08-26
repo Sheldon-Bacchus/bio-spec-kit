@@ -1,0 +1,28 @@
+schema_version: "1.0"
+
+extension:
+  id: "bio-provenance"
+  name: "Bioinformatics Provenance"
+  version: "0.1.0"
+  description: "Collect hashes, revisions, versions, and run metadata."
+  author: "Sheldon-Bacchus"
+  repository: "https://github.com/Sheldon-Bacchus/bio-spec-kit"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=0.14.0"
+
+provides:
+  commands:
+    - name: "speckit.bio-provenance.collect"
+      file: "commands/collect.md"
+      description: "Collect the reproducibility manifest"
+  scripts:
+    - name: "bio-provenance-collect"
+      file: "scripts/collect.py"
+
+tags:
+  - "bioinformatics"
+  - "provenance"
+  - "reproducibility"
+

@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.specify/
+.bio/runs/
+**/.bio/runs/
+.bio/pipeline/work/
+.bio/pipeline/.nextflow/
+.bio/pipeline/.snakemake/
+**/.bio/pipeline/work/
+**/.bio/pipeline/.nextflow/
+**/.bio/pipeline/.snakemake/
+tests/smoke-project/
+dist/
