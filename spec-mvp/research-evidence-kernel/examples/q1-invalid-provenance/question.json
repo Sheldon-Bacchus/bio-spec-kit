@@ -1,0 +1,14 @@
+{
+  "id": "Q-001",
+  "text": "在预先定义的 PA 与 LUAD 队列中，是否存在方向一致且超过预设效应阈值的共同转录响应？",
+  "estimand": "方向一致且经独立验证的响应基因比例",
+  "scope": "fixture-only deterministic demo",
+  "expected_input_hashes": {
+    "pa_effects.tsv": "sha256:deliberately-wrong"
+  },
+  "decision_rule": {
+    "effect_threshold": 1.0,
+    "minimum_overlap": 3,
+    "minimum_concordance": 0.8
+  }
+}
