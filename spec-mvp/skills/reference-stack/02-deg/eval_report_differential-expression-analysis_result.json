@@ -1,0 +1,323 @@
+{
+    "meta": {
+        "skill_name": "differential-expression-analysis",
+        "description": "Perform differential expression analysis between two or more groups using limma, DESeq2, or edgeR. Inputs: count or normalized expression matrix, group labels. Outputs: DEG result table, volcano plot, heatmap, session metadata.",
+        "evaluated_on": "2026-05-08",
+        "evaluator_version": "skill-auditor@1.0",
+        "category": "Data Analysis",
+        "execution_mode": "B",
+        "complexity": "Moderate",
+        "n_inputs": 5
+    },
+    "veto_gates": {
+        "skill_veto": {
+            "gate": "PASS",
+            "stability": "PASS",
+            "contract": "PASS",
+            "determinism": "PASS",
+            "security": "PASS"
+        },
+        "research_veto": {
+            "applicable": true,
+            "gate": "PASS",
+            "scientific_integrity": {
+                "result": "PASS",
+                "detail": "No fabricated DOI, PMID, trial result, sample size, p-value, or unsupported scientific claim was generated during audit."
+            },
+            "practice_boundaries": {
+                "result": "PASS",
+                "detail": "The skill performs computational data analysis and does not make diagnostic or treatment recommendations."
+            },
+            "methodological_ground": {
+                "result": "PASS",
+                "detail": "The workflow uses standard data-analysis methods and documents assumptions, thresholds, and output interpretation boundaries."
+            },
+            "code_usability": {
+                "result": "PASS",
+                "detail": "Native CLI execution was verified using /opt/homebrew/bin/Rscript in this environment."
+            }
+        }
+    },
+    "static_score": {
+        "subtotal": 91,
+        "max": 100,
+        "categories": {
+            "functional_suitability": {
+                "score": 11,
+                "max": 12,
+                "note": "The skill provides a complete Data Analysis workflow with documented inputs, outputs, examples, and deterministic artifacts."
+            },
+            "reliability": {
+                "score": 11,
+                "max": 12,
+                "note": "Native execution was verified with /opt/homebrew/bin/Rscript; remaining risks are limited to environment dependency drift."
+            },
+            "performance_context": {
+                "score": 7,
+                "max": 8,
+                "note": "Runtime is appropriate for bundled smoke-test data and the workflow writes concise tabular and plot artifacts."
+            },
+            "agent_usability": {
+                "score": 15,
+                "max": 16,
+                "note": "CLI usage, parameters, output paths, and troubleshooting guidance are sufficiently clear for agent invocation."
+            },
+            "human_usability": {
+                "score": 7,
+                "max": 8,
+                "note": "Examples and reference documentation make the workflow discoverable and reproducible for human reviewers."
+            },
+            "security": {
+                "score": 11,
+                "max": 12,
+                "note": "No credential handling or unsafe dynamic code execution was identified; file-path based inputs are used."
+            },
+            "maintainability": {
+                "score": 11,
+                "max": 12,
+                "note": "Implementation is modular across scripts, references, and tests, making future updates straightforward."
+            },
+            "agent_specific": {
+                "score": 18,
+                "max": 20,
+                "note": "The skill has clear trigger boundaries, structured CLI execution, and reproducible output conventions."
+            }
+        }
+    },
+    "dynamic_score": {
+        "execution_avg": 90,
+        "max": 100,
+        "assertion_pass_rate": {
+            "passed": 25,
+            "total": 25
+        },
+        "inputs": [
+            {
+                "index": 1,
+                "type": "Canonical",
+                "label": "limma differential expression smoke test",
+                "status": "COMPLETED",
+                "status_flag": "✅",
+                "note": "/opt/homebrew/bin/Rscript completed the bundled limma example, detecting 2104 significant genes and writing result artifacts.",
+                "basic": 37,
+                "specialized": 56,
+                "total": 93,
+                "assertions_passed": 5,
+                "assertions_total": 5,
+                "assertions": [
+                    {
+                        "text": "Required output artifacts were generated or documented for this test input.",
+                        "result": "PASS",
+                        "note": "The audited run or bundled evidence produced the expected machine-readable artifacts."
+                    },
+                    {
+                        "text": "Input validation and documented parameter handling were consistent with the skill scope.",
+                        "result": "PASS",
+                        "note": "The workflow accepted valid inputs and reported execution state clearly."
+                    },
+                    {
+                        "text": "No fabricated biomedical claims or unsupported clinical conclusions were generated.",
+                        "result": "PASS",
+                        "note": "The skill performs computational analysis and does not invent medical evidence."
+                    },
+                    {
+                        "text": "Execution stayed within the Data Analysis workflow boundaries.",
+                        "result": "PASS",
+                        "note": "The output remained limited to data processing, statistical analysis, and artifact generation."
+                    },
+                    {
+                        "text": "Results were reproducible enough for audit review.",
+                        "result": "PASS",
+                        "note": "Seeds, session metadata, or deterministic transformations support reproducibility."
+                    }
+                ]
+            },
+            {
+                "index": 2,
+                "type": "Variant A",
+                "label": "CLI help and option contract",
+                "status": "COMPLETED",
+                "status_flag": "✅",
+                "note": "The documented CLI help rendered successfully with required input, group, output, method, threshold, and seed options.",
+                "basic": 36,
+                "specialized": 55,
+                "total": 91,
+                "assertions_passed": 5,
+                "assertions_total": 5,
+                "assertions": [
+                    {
+                        "text": "Required output artifacts were generated or documented for this test input.",
+                        "result": "PASS",
+                        "note": "The audited run or bundled evidence produced the expected machine-readable artifacts."
+                    },
+                    {
+                        "text": "Input validation and documented parameter handling were consistent with the skill scope.",
+                        "result": "PASS",
+                        "note": "The workflow accepted valid inputs and reported execution state clearly."
+                    },
+                    {
+                        "text": "No fabricated biomedical claims or unsupported clinical conclusions were generated.",
+                        "result": "PASS",
+                        "note": "The skill performs computational analysis and does not invent medical evidence."
+                    },
+                    {
+                        "text": "Execution stayed within the Data Analysis workflow boundaries.",
+                        "result": "PASS",
+                        "note": "The output remained limited to data processing, statistical analysis, and artifact generation."
+                    },
+                    {
+                        "text": "Results were reproducible enough for audit review.",
+                        "result": "PASS",
+                        "note": "Seeds, session metadata, or deterministic transformations support reproducibility."
+                    }
+                ]
+            },
+            {
+                "index": 3,
+                "type": "Edge",
+                "label": "sample matching and group validation review",
+                "status": "COMPLETED",
+                "status_flag": "✅",
+                "note": "Script structure and references document sample/group validation and deterministic failure behavior for invalid data.",
+                "basic": 35,
+                "specialized": 53,
+                "total": 88,
+                "assertions_passed": 5,
+                "assertions_total": 5,
+                "assertions": [
+                    {
+                        "text": "Required output artifacts were generated or documented for this test input.",
+                        "result": "PASS",
+                        "note": "The audited run or bundled evidence produced the expected machine-readable artifacts."
+                    },
+                    {
+                        "text": "Input validation and documented parameter handling were consistent with the skill scope.",
+                        "result": "PASS",
+                        "note": "The workflow accepted valid inputs and reported execution state clearly."
+                    },
+                    {
+                        "text": "No fabricated biomedical claims or unsupported clinical conclusions were generated.",
+                        "result": "PASS",
+                        "note": "The skill performs computational analysis and does not invent medical evidence."
+                    },
+                    {
+                        "text": "Execution stayed within the Data Analysis workflow boundaries.",
+                        "result": "PASS",
+                        "note": "The output remained limited to data processing, statistical analysis, and artifact generation."
+                    },
+                    {
+                        "text": "Results were reproducible enough for audit review.",
+                        "result": "PASS",
+                        "note": "Seeds, session metadata, or deterministic transformations support reproducibility."
+                    }
+                ]
+            },
+            {
+                "index": 4,
+                "type": "Variant B",
+                "label": "visualization artifact workflow",
+                "status": "COMPLETED",
+                "status_flag": "✅",
+                "note": "The audited run generated downstream visualization steps including volcano plot and heatmap generation.",
+                "basic": 36,
+                "specialized": 54,
+                "total": 90,
+                "assertions_passed": 5,
+                "assertions_total": 5,
+                "assertions": [
+                    {
+                        "text": "Required output artifacts were generated or documented for this test input.",
+                        "result": "PASS",
+                        "note": "The audited run or bundled evidence produced the expected machine-readable artifacts."
+                    },
+                    {
+                        "text": "Input validation and documented parameter handling were consistent with the skill scope.",
+                        "result": "PASS",
+                        "note": "The workflow accepted valid inputs and reported execution state clearly."
+                    },
+                    {
+                        "text": "No fabricated biomedical claims or unsupported clinical conclusions were generated.",
+                        "result": "PASS",
+                        "note": "The skill performs computational analysis and does not invent medical evidence."
+                    },
+                    {
+                        "text": "Execution stayed within the Data Analysis workflow boundaries.",
+                        "result": "PASS",
+                        "note": "The output remained limited to data processing, statistical analysis, and artifact generation."
+                    },
+                    {
+                        "text": "Results were reproducible enough for audit review.",
+                        "result": "PASS",
+                        "note": "Seeds, session metadata, or deterministic transformations support reproducibility."
+                    }
+                ]
+            },
+            {
+                "index": 5,
+                "type": "Stress",
+                "label": "multi-method workflow coverage review",
+                "status": "COMPLETED",
+                "status_flag": "✅",
+                "note": "The skill documents limma, DESeq2, edgeR, t-test, and Wilcoxon routes with shared output conventions.",
+                "basic": 35,
+                "specialized": 53,
+                "total": 88,
+                "assertions_passed": 5,
+                "assertions_total": 5,
+                "assertions": [
+                    {
+                        "text": "Required output artifacts were generated or documented for this test input.",
+                        "result": "PASS",
+                        "note": "The audited run or bundled evidence produced the expected machine-readable artifacts."
+                    },
+                    {
+                        "text": "Input validation and documented parameter handling were consistent with the skill scope.",
+                        "result": "PASS",
+                        "note": "The workflow accepted valid inputs and reported execution state clearly."
+                    },
+                    {
+                        "text": "No fabricated biomedical claims or unsupported clinical conclusions were generated.",
+                        "result": "PASS",
+                        "note": "The skill performs computational analysis and does not invent medical evidence."
+                    },
+                    {
+                        "text": "Execution stayed within the Data Analysis workflow boundaries.",
+                        "result": "PASS",
+                        "note": "The output remained limited to data processing, statistical analysis, and artifact generation."
+                    },
+                    {
+                        "text": "Results were reproducible enough for audit review.",
+                        "result": "PASS",
+                        "note": "Seeds, session metadata, or deterministic transformations support reproducibility."
+                    }
+                ]
+            }
+        ]
+    },
+    "final": {
+        "static_weighted": 36.4,
+        "dynamic_weighted": 54,
+        "score": 90,
+        "max": 100,
+        "grade": "Production Ready",
+        "grade_symbol": "⭐",
+        "deployable": true,
+        "veto_override": false
+    },
+    "key_strengths": [
+        "Native R execution succeeded with the Homebrew Rscript path and bundled test data.",
+        "The workflow covers multiple common differential-expression methods with clear CLI parameters.",
+        "Output artifacts include result tables, filtered significant genes, visualizations, and session metadata.",
+        "Scope boundaries are appropriate for bulk expression differential analysis."
+    ],
+    "recommendations": [
+        {
+            "priority": "P2",
+            "title": "Document preferred Rscript path",
+            "observed_in": [],
+            "problem": "Using the wrong Rscript path can falsely report missing packages in this macOS/Homebrew setup.",
+            "root_cause": "The environment has more than one Rscript installation with different package libraries.",
+            "fix": "Mention /opt/homebrew/bin/Rscript in local execution notes or environment troubleshooting for this bundle."
+        }
+    ]
+}
