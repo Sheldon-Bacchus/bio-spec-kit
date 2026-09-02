@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "extensions": {
+    "bio-multiqc": {
+      "version": "0.1.0",
+      "source": "local",
+      "manifest_hash": "sha256:3b8f3e00523395f4cc400aefb1cae572bd6072725d2a830857192d98ab5ed96b",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "codex": [
+          "speckit.bio-multiqc.run"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-09-02T13:07:23.577529+00:00"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+schema_version: "1.0"
+
+extension:
+  id: "bio-multiqc"
+  name: "MultiQC Evidence Report"
+  version: "0.1.0"
+  description: "Generate a pinned MultiQC report and expose it to a review gate."
+  author: "Sheldon-Bacchus"
+  repository: "https://github.com/Sheldon-Bacchus/bio-spec-kit"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=0.14.0"
+  tools:
+    - name: "multiqc"
+      required: true
+      version: ">=1.30"
+
+provides:
+  commands:
+    - name: "speckit.bio-multiqc.run"
+      file: "commands/run.md"
+      description: "Run MultiQC on a bounded analysis result directory."
+  scripts:
+    - name: "bio-multiqc-run"
+      file: "scripts/run_multiqc.py"
+  config:
+    - name: "multiqc-config"
+      file: "config/multiqc_config.yaml"
+
+tags:
+  - "bioinformatics"
+  - "multiqc"
+  - "qc"
+  - "reporting"
+  - "quality-gate"

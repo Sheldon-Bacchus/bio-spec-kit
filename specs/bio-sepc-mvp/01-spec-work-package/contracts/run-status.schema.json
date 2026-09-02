@@ -1,0 +1,369 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bio-spec-kit.local/specs/005-skills-nextflow-research-core/contracts/run-status.schema.json",
+  "title": "Research Core run status envelope",
+  "description": "Machine-readable status and provenance for one bounded run. It is the only contract in this feature that owns execution, scientific verification, and release state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "component_id",
+    "contract_ref",
+    "contract_schema_version",
+    "verifier_ref",
+    "repository",
+    "artifact_ready",
+    "status",
+    "source_verdict",
+    "review_record",
+    "provenance",
+    "recorded_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "component_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "contract_ref": {
+      "$ref": "#/$defs/relative_path"
+    },
+    "contract_schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    },
+    "verifier_ref": {
+      "$ref": "#/$defs/relative_path"
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path_base", "git_commit", "working_tree_dirty"],
+      "properties": {
+        "path_base": {
+          "const": "repository-root"
+        },
+        "git_commit": {
+          "type": "string",
+          "pattern": "^(?:[0-9a-f]{40}|unknown)$"
+        },
+        "working_tree_dirty": {
+          "type": "boolean"
+        }
+      }
+    },
+    "artifact_ready": {
+      "type": "boolean"
+    },
+    "status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution", "scientific", "release"],
+      "properties": {
+        "execution": {
+          "type": "string",
+          "enum": ["not-run", "passed", "failed", "blocked", "skipped"]
+        },
+        "scientific": {
+          "type": "string",
+          "enum": ["not-verified", "verified", "failed", "not-applicable"]
+        },
+        "release": {
+          "type": "string",
+          "enum": ["pending", "approved", "rejected", "not-applicable"]
+        }
+      }
+    },
+    "source_verdict": {
+      "$ref": "#/$defs/run_relative_path"
+    },
+    "review_record": {
+      "$ref": "#/$defs/run_relative_path"
+    },
+    "approval_record": {
+      "$ref": "#/$defs/run_relative_path"
+    },
+    "provenance": {
+      "$ref": "#/$defs/run_provenance"
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "properties": {
+              "scientific": {
+                "const": "verified"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "artifact_ready": {
+            "const": true
+          },
+          "status": {
+            "properties": {
+              "execution": {
+                "const": "passed"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "properties": {
+              "release": {
+                "const": "approved"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": ["approval_record"],
+        "properties": {
+          "status": {
+            "properties": {
+              "scientific": {
+                "const": "verified"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "properties": {
+              "execution": {
+                "enum": ["not-run", "failed", "blocked", "skipped"]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "properties": {
+              "scientific": {
+                "enum": ["not-verified", "not-applicable"]
+              },
+              "release": {
+                "enum": ["pending", "rejected", "not-applicable"]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "artifact_ready": {
+            "const": false
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "properties": {
+              "scientific": {
+                "enum": ["not-verified", "not-applicable"]
+              },
+              "release": {
+                "enum": ["pending", "rejected", "not-applicable"]
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?![\\\\/])(?!.*(?:^|/)\\.\\.(?:/|$))[^\\r\\n]+$"
+    },
+    "run_relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?![\\\\/])(?!.*(?:^|/)\\.\\.(?:/|$))[^\\r\\n]+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "manifest_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/run_relative_path"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "reference_snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "version_or_date"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": ["recorded", "not_applicable", "unknown"]
+        },
+        "version_or_date": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "$ref": "#/$defs/run_relative_path"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "unknown_reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "recorded"
+              }
+            }
+          },
+          "then": {
+            "required": ["source", "sha256"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "unknown"
+              }
+            }
+          },
+          "then": {
+            "required": ["unknown_reason"]
+          }
+        }
+      ]
+    },
+    "run_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_manifest",
+        "artifact_manifest",
+        "command",
+        "executable",
+        "parameters",
+        "environment",
+        "reference_snapshots"
+      ],
+      "properties": {
+        "input_manifest": {
+          "$ref": "#/$defs/manifest_ref"
+        },
+        "artifact_manifest": {
+          "$ref": "#/$defs/manifest_ref"
+        },
+        "command": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "executable": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "version"],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "path": {
+              "$ref": "#/$defs/relative_path"
+            }
+          }
+        },
+        "parameters": {
+          "type": "object"
+        },
+        "environment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["platform", "python", "tool_versions"],
+          "properties": {
+            "platform": {
+              "type": "string",
+              "minLength": 1
+            },
+            "python": {
+              "type": "string",
+              "minLength": 1
+            },
+            "tool_versions": {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "reference_snapshots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reference_snapshot"
+          }
+        }
+      }
+    }
+  }
+}

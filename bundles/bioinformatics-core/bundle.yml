@@ -13,7 +13,10 @@ bundle:
 
 requires:
   speckit_version: ">=0.14.0"
-  tools: []
+  tools:
+    - name: "multiqc"
+      required: false
+      version: ">=1.30"
   mcp: []
 
 provides:
@@ -26,6 +29,8 @@ provides:
     - id: "bio-intake"
       version: "0.1.0"
     - id: "bio-qc"
+      version: "0.1.0"
+    - id: "bio-multiqc"
       version: "0.1.0"
     - id: "bio-pipeline"
       version: "0.1.0"
@@ -41,5 +46,5 @@ tags:
   - "bioinformatics"
   - "reproducibility"
   - "quality-gate"
+  - "multiqc"
   - "bulk-rnaseq"
-

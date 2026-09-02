@@ -1,0 +1,97 @@
+schema_version: "1.0"
+
+workflow:
+  id: "bio-research-shared-integration"
+  name: "Bio Research Shared Integration MVP"
+  version: "0.1.0"
+  author: "Sheldon-Bacchus"
+  description: "Spec-driven execution of a frozen PA/LUAD DEG shared-integration feature."
+
+requires:
+  speckit_version: ">=0.14.0"
+  integrations:
+    any: ["claude", "codex", "copilot", "generic"]
+
+inputs:
+  spec:
+    type: string
+    required: true
+    prompt: "Describe the frozen DEG integration feature"
+  integration:
+    type: string
+    default: "auto"
+    prompt: "Spec Kit integration (auto uses the initialized project integration)"
+  pa_input:
+    type: string
+    required: true
+    prompt: "Path to the frozen PA DEG TSV"
+  luad_input:
+    type: string
+    required: true
+    prompt: "Path to the frozen LUAD DEG TSV"
+  integration_output:
+    type: string
+    required: true
+    default: ".bio/runs/current/shared-integration"
+    prompt: "Fresh output directory for the integration artifacts"
+  duplicate_policy:
+    type: string
+    default: "error"
+    enum: ["error", "first", "max-abs-effect"]
+  release_verdict:
+    type: string
+    default: ""
+    enum: ["", "approve", "reject"]
+
+steps:
+  - id: "specify"
+    command: "speckit.specify"
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: "clarify"
+    command: "speckit.clarify"
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: "review-spec"
+    type: "gate"
+    message: "Review the frozen-input contract before planning."
+    options: ["approve", "reject"]
+    on_reject: "abort"
+
+  - id: "plan"
+    command: "speckit.plan"
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: "tasks"
+    command: "speckit.tasks"
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: "implement"
+    command: "speckit.implement"
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: "shared-integration-run"
+    type: "shell"
+    run: "python .specify/extensions/bio-integration/scripts/run_shared_integration.py --pa \"{{ inputs.pa_input }}\" --luad \"{{ inputs.luad_input }}\" --output \"{{ inputs.integration_output }}\" --duplicate-policy \"{{ inputs.duplicate_policy }}\""
+
+  - id: "review-execution"
+    type: "gate"
+    message: "Review the shared integration verdict, partition, provenance, and bounded claim."
+    show_file: "{{ inputs.integration_output }}/claim.json"
+    options: ["approve", "reject"]
+    on_reject: "abort"
+    verdict_input: "release_verdict"
+
+  - id: "record-review"
+    type: "shell"
+    run: "python .specify/extensions/bio-review/scripts/record_approval.py --stage shared-integration --decision \"{{ steps.review-execution.output.choice }}\" --evidence \"{{ inputs.integration_output }}/integration-verdict.json\""

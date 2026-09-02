@@ -1,0 +1,14 @@
+component_id	kind	invariant_ids	speckit_stage	bio_stage	mapping_status	missing_or_boundary
+bulk-pa-luad	project-adapter	NF-I01;NF-I02;NF-I03;NF-I04;NF-I06;NF-I07;NF-I08;NF-I10;NF-I11;NF-I12	06 Tasks -> 07 Analyze	S04-S06	INFERENCE	Pinned R runtime, full count fixture and stable tuple transport are not verified
+cross-branch-integration	project-adapter	NF-I01;NF-I03;NF-I04;NF-I06;NF-I09;NF-I10;NF-I11;NF-I12	06 Tasks -> 07 Analyze	S09-S10	INFERENCE	Joint-model contract and held-out predictive validation remain out of scope for this slice
+multiqc	project-adapter	NF-I01;NF-I02;NF-I03;NF-I05;NF-I07;NF-I08;NF-I09;NF-I10;NF-I11;NF-I12	08 Implement (approved representative)	S01	FACT+INFERENCE	Wrapper verifies artifacts and provenance; scientific QC threshold and human release remain separate
+pathway-enrichment	project-adapter	NF-I01;NF-I02;NF-I03;NF-I04;NF-I06;NF-I07;NF-I08;NF-I09;NF-I10;NF-I11;NF-I12	06 Tasks -> 07 Analyze	S10-S11	INFERENCE	Pinned GO/KEGG runtime and independent pathway verifier are not verified
+wgcna-module-constraint	project-adapter	NF-I01;NF-I02;NF-I03;NF-I04;NF-I06;NF-I07;NF-I08;NF-I09;NF-I10;NF-I11;NF-I12	06 Tasks -> 07 Analyze	S07-S09	INFERENCE	Stability/preservation fixture and R environment are not verified
+01-mds	reference	NF-I01;NF-I03;NF-I06;NF-I07;NF-I08;NF-I09;NF-I10;NF-I11;NF-I12	04 Plan -> 07 Analyze	S03	INFERENCE	Projection interpretation is exploratory and has no runtime contract in this feature
+02-deg	reference	NF-I01;NF-I02;NF-I03;NF-I04;NF-I06;NF-I07;NF-I08;NF-I10;NF-I11;NF-I12	04 Plan -> 07 Analyze	S04-S06	INFERENCE	Reference prose overlaps the adapter but cannot establish executable or scientific status
+02-deg-results	reference	NF-I01;NF-I03;NF-I04;NF-I06;NF-I09;NF-I10;NF-I11;NF-I12	04 Plan -> 07 Analyze	S06-S08	INFERENCE	NA semantics and output-shape contract need a deterministic verifier
+03-de-visualization	reference	NF-I01;NF-I03;NF-I05;NF-I07;NF-I09;NF-I10;NF-I11;NF-I12	04 Plan -> 07 Analyze	S08	INFERENCE	Figure-content and identity preservation are not runtime-verified
+03-volcano	reference	NF-I01;NF-I03;NF-I05;NF-I06;NF-I07;NF-I09;NF-I10;NF-I11;NF-I12	04 Plan -> 07 Analyze	S08	INFERENCE	Effect/shrinkage field contract and deterministic plot verifier are not implemented
+04-pathway-enricher	reference	NF-I01;NF-I02;NF-I03;NF-I04;NF-I06;NF-I07;NF-I08;NF-I09;NF-I10;NF-I11	04 Plan -> 07 Analyze	S10-S11	INFERENCE	External API release, privacy boundary and reproducible response snapshot are unresolved
+04-pathway-workflow	reference	NF-I01;NF-I02;NF-I03;NF-I04;NF-I05;NF-I06;NF-I07;NF-I08;NF-I09;NF-I10;NF-I11;NF-I12	04 Plan -> 07 Analyze	S10-S12	INFERENCE	Workflow engine implementation and method-specific verifiers are not in this slice
+05-kegg	reference	NF-I01;NF-I02;NF-I03;NF-I04;NF-I06;NF-I07;NF-I08;NF-I09;NF-I10;NF-I11;NF-I12	04 Plan -> 07 Analyze	S11-S12	INFERENCE	KEGG snapshot/live API and topology-specific validation remain reference-only

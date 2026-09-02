@@ -14,3 +14,5 @@ __pycache__/
 **/.bio/pipeline/.snakemake/
 tests/smoke-project/
 dist/
+vendor/sources/
+spec-mvp/artifacts/

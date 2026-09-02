@@ -1,0 +1,40 @@
+schema_version: "1.0"
+
+workflow:
+  id: "multiqc-vertical-slice"
+  name: "Fixture to verified MultiQC report"
+  version: "0.1.0"
+  spec: "specs/002-multiqc-vertical-slice/spec.md"
+
+layers:
+  spec_core:
+    owns: ["user-visible scenario", "input/output contract", "acceptance checks"]
+  agent_skills_core:
+    owns: ["skill discovery metadata", "activation instructions", "preset selection"]
+    skill: ".agents/skills/multiqc/SKILL.md"
+  execution_workflow_core:
+    owns: ["wrapper", "MultiQC CLI", "logs", "JSON/HTML artifacts", "content verification"]
+
+inputs:
+  fixture: "tests/fixtures/multiqc"
+  config: "extensions/bio-multiqc/config/multiqc_config.yaml"
+  preset: "spec-mvp/presets/multiqc-fastqc-mvp.yml"
+
+steps:
+  - id: "clean-input"
+    type: "filesystem"
+    action: "read-only fixture manifest"
+  - id: "activate-skill"
+    type: "agent-skill"
+    skill: "multiqc"
+  - id: "run-wrapper"
+    type: "shell"
+    command: "python extensions/bio-multiqc/scripts/run_multiqc.py"
+  - id: "verify-artifacts"
+    type: "deterministic-check"
+    checks: ["exit code", "HTML", "multiqc_report_data/multiqc_data.json", "source map", "fixture values", "input hash"]
+  - id: "human-view"
+    type: "user-observable"
+    artifact: "multiqc_report.html"
+
+failure_policy: "stop-and-preserve-verdict"

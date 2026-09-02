@@ -1,0 +1,29 @@
+schema_version: "1.0"
+
+extension:
+  id: "bio-review"
+  name: "Bioinformatics Review Records"
+  version: "0.1.0"
+  description: "Persist human gate decisions and evidence references."
+  author: "Sheldon-Bacchus"
+  repository: "https://github.com/Sheldon-Bacchus/bio-spec-kit"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=0.14.0"
+
+provides:
+  commands:
+    - name: "speckit.bio-review.record"
+      file: "commands/record.md"
+      description: "Record an approval, rejection, or waiver"
+  scripts:
+    - name: "bio-review-record"
+      file: "scripts/record_approval.py"
+
+tags:
+  - "bioinformatics"
+  - "review"
+  - "approval"
+  - "governance"
+

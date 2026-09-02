@@ -2,6 +2,11 @@
 
 Reusable GitHub Spec Kit components for evidence-first bioinformatics work.
 
+The unified project map, decision log, MVP boundaries, validation layers, and
+current implementation status are maintained in
+[BIO-SPEC-KIT-REFERENCE.md](BIO-SPEC-KIT-REFERENCE.md). Read that file first
+before adding a new preset, extension, workflow, Skill, or research Feature.
+
 This repository is intentionally a composition layer around Spec Kit:
 
 - `presets/bioinformatics` changes the language, templates, and agent prompts.
@@ -53,6 +58,31 @@ specify bundle build --path .\bundles\bioinformatics-core --output .\dist
 specify bundle install .\dist\bioinformatics-core-0.1.0.zip
 ```
 
+## Official-first research MVP
+
+The narrower research MVP keeps the official Spec Kit lifecycle and adds only
+research fields to the templates plus one callable workflow. It is deliberately
+separate from the broader `bioinformatics` preset and from the five research
+design documents.
+
+```powershell
+specify preset add --dev .\presets\bio-research-mvp
+specify extension add --dev .\extensions\bio-multiqc
+specify extension add --dev .\extensions\bio-review
+specify workflow add --dev .\workflows\bio-research-mvp
+specify workflow run bio-research-mvp `
+  -i spec="Create a bounded MultiQC evidence report for the supplied fixture" `
+  -i multiqc_input=tests/fixtures/multiqc `
+  -i multiqc_output=.bio/runs/current/multiqc `
+  -i multiqc_config=.specify/extensions/bio-multiqc/config/multiqc_config.yaml `
+  -i multiqc_preset=fastqc-multiqc-mvp
+```
+
+The workflow uses only the official command, shell, and gate step types. The
+existing `spec-mvp/workflows/multiqc-vertical-slice.yml` remains a design
+reference until the official workflow has been validated locally; it is not
+registered as a Spec Kit workflow.
+
 ## Evidence contract
 
 Each run should preserve these artifacts under `.bio/runs/<run-id>/`:
@@ -83,4 +113,3 @@ This is the first local MVP. It provides a reusable package structure and a
 small deterministic core; assay-specific thresholds and production pipeline
 implementations should be added only after validating the lifecycle on a small
 public dataset.
-

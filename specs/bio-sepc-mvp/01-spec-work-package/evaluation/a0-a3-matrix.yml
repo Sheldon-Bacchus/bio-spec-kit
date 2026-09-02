@@ -1,0 +1,68 @@
+protocol_version: "0.2"
+status: "FROZEN_PROTOCOL / A0-A3_NOT_RUN"
+variants:
+  - id: "A0"
+    spec_condition: "no Spec Kit artifact"
+    core_condition: "no Research Core"
+    skill_condition: "no Skill or fixed raw baseline"
+  - id: "A1"
+    spec_condition: "official Spec Kit artifacts"
+    core_condition: "no Bio Research Core contract"
+    skill_condition: "no Skill or fixed raw baseline"
+  - id: "A2"
+    spec_condition: "official Spec Kit artifacts"
+    core_condition: "frozen Research Core v0 contract"
+    skill_condition: "no selected Skill"
+  - id: "A3"
+    spec_condition: "official Spec Kit artifacts"
+    core_condition: "frozen Research Core v0 contract"
+    skill_condition: "selected component Skill/contract"
+fixed_comparison_conditions:
+  - "same case task statement"
+  - "same input manifest and data"
+  - "same model and tool permissions"
+  - "same time and compute budget"
+  - "same output format"
+  - "same oracle, deterministic verifier and human rubric"
+eligibility:
+  decision_stage: "before_agent_run"
+  required:
+    - "schema_valid_case_manifest"
+    - "readable_declared_inputs_and_hashes"
+    - "frozen_oracle"
+    - "reachable_deterministic_verifier"
+    - "satisfied_permissions_and_budget"
+    - "no_construction_or_holdout_leakage"
+  pre_run_exclusion_codes:
+    - "MISSING_INPUT"
+    - "MISSING_ORACLE"
+    - "MISSING_VERIFIER"
+    - "PERMISSION_DENIED"
+    - "BUDGET_UNAVAILABLE"
+    - "SCHEMA_INVALID"
+    - "CONSTRUCTION_LEAKAGE"
+failure_accounting:
+  eligible_timeout: "count_as_failed_repetition"
+  eligible_execution_error: "count_as_failed_repetition"
+  eligible_missing_or_malformed_output: "count_as_failed_repetition"
+  eligible_verifier_error_or_fail: "count_as_failed_repetition"
+  eligible_malformed_trace: "count_as_failed_repetition"
+  eligible_unsupported_claim: "count_as_failed_repetition"
+repetition_policy:
+  count_per_case_variant: 3
+  replicate_indices: [1, 2, 3]
+  seed_derivation: "sha256(protocol_version:case_id:variant_id:replicate_index)"
+  unsupported_seed_record: "seed_status: unavailable"
+  default_determinism: "strict"
+  strict_cell_pass: "all repetitions pass and normalized output hashes agree"
+  semantic_exception: "requires an explicitly frozen semantic verifier; every repetition must still pass"
+paired_aggregation:
+  eligible_case_set: "intersection across A0,A1,A2,A3"
+  minimum_eligible_case_count: 1
+  empty_or_insufficient_status: "NOT_RUN/INSUFFICIENT_ELIGIBLE_CASES"
+  denominator: "eligible case-variant cells, not successful attempts"
+current_authorization:
+  construction_smoke_is_not_a0_a3_cell: true
+  unseen_validation_case: "holdout-unseen-component"
+  unseen_validation_status: "NOT_RUN"
+  effect_score_status: "NOT_RUN"

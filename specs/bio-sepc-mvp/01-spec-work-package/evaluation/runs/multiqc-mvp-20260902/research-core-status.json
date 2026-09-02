@@ -1,0 +1,68 @@
+{
+  "schema_version": "0.1",
+  "run_id": "multiqc-mvp-20260902",
+  "component_id": "multiqc",
+  "contract_ref": "specs/005-skills-nextflow-research-core/contracts/multiqc/node.contract.json",
+  "contract_schema_version": "0.1",
+  "verifier_ref": "specs/005-skills-nextflow-research-core/evaluation/cases/multiqc-mvp/verifier/verify_case.py",
+  "repository": {
+    "path_base": "repository-root",
+    "git_commit": "8d13d920af214f7df974d333b801a26aa8d47a21",
+    "working_tree_dirty": true
+  },
+  "artifact_ready": true,
+  "status": {
+    "execution": "passed",
+    "scientific": "not-verified",
+    "release": "pending"
+  },
+  "source_verdict": "multiqc-verdict.json",
+  "review_record": "research-core-review.md",
+  "provenance": {
+    "input_manifest": {
+      "path": "input-manifest.json",
+      "sha256": "8c3d545663452de32db79641aa35bf9faae093fbaa5f828b3ddbf216ab22e6df"
+    },
+    "artifact_manifest": {
+      "path": "artifact-manifest.json",
+      "sha256": "49d6a538b3ff6ffae9ce396afe74c0085afbde5d4dbf22753e6dbaef5bd6badd"
+    },
+    "command": [
+      ".venv/Scripts/multiqc.exe",
+      "specs/005-skills-nextflow-research-core/evaluation/cases/multiqc-mvp/inputs",
+      "--outdir",
+      "specs/005-skills-nextflow-research-core/evaluation/runs/multiqc-mvp-20260902",
+      "--filename",
+      "multiqc_report.html",
+      "--config",
+      "extensions/bio-multiqc/config/multiqc_config.yaml",
+      "--force"
+    ],
+    "executable": {
+      "id": "multiqc",
+      "version": "1.35",
+      "path": ".venv/Scripts/multiqc.exe"
+    },
+    "parameters": {
+      "preset": "fastqc-multiqc-mvp",
+      "mode": "required",
+      "output_policy": "fresh directory unless explicit overwrite is approved"
+    },
+    "environment": {
+      "platform": "Windows-11-10.0.26200-SP0",
+      "python": "3.12.10",
+      "tool_versions": {
+        "multiqc": "1.35",
+        "wrapper": "0.1.0"
+      }
+    },
+    "reference_snapshots": [
+      {
+        "id": "external-reference-data",
+        "status": "not_applicable",
+        "version_or_date": "not-applicable"
+      }
+    ]
+  },
+  "recorded_at": "2026-09-02T12:52:14+08:00"
+}

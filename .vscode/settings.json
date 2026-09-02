@@ -1,0 +1,4 @@
+{
+    "nextflow.telemetry.enabled": false,
+    "specstory.cloudSync.enabled": "never"
+}

@@ -1,0 +1,409 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bio-spec-kit.local/specs/005-skills-nextflow-research-core/contracts/node-contract.schema.json",
+  "title": "Bio Research Core static node capability contract",
+  "description": "Machine-readable static component capability and interface. It does not contain the state of any particular execution, scientific verification, or release decision.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "component_id",
+    "kind",
+    "scientific_purpose",
+    "hard_boundary",
+    "method",
+    "public_interface",
+    "ports",
+    "routes",
+    "gates",
+    "named_outputs",
+    "identity",
+    "provenance",
+    "evidence"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    },
+    "component_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "project-adapter",
+        "reference",
+        "module",
+        "subworkflow",
+        "router",
+        "facade"
+      ]
+    },
+    "scientific_purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hard_boundary": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "estimand_or_observable", "unsupported_claims"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "estimand_or_observable": { "type": "string", "minLength": 1 },
+        "unsupported_claims": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "public_interface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["takes", "emits"],
+      "properties": {
+        "takes": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "emits": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "ports": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/port" },
+      "minItems": 2
+    },
+    "routes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/route" },
+      "minItems": 1
+    },
+    "gates": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/gate" },
+      "minItems": 1
+    },
+    "named_outputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "port_id", "stable_for_callers"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "port_id": { "type": "string", "minLength": 1 },
+          "stable_for_callers": { "type": "boolean" }
+        }
+      },
+      "minItems": 1
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key_definitions",
+        "join_cardinality",
+        "duplicate_policy",
+        "unmatched_policy",
+        "transport",
+        "missing_key_behavior"
+      ],
+      "properties": {
+        "key_definitions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/identity_key" },
+          "minItems": 1
+        },
+        "join_cardinality": {
+          "type": "string",
+          "enum": [
+            "one-to-one",
+            "one-to-many",
+            "many-to-one",
+            "many-to-many",
+            "not-applicable"
+          ]
+        },
+        "duplicate_policy": {
+          "type": "string",
+          "enum": [
+            "fail_closed",
+            "deduplicate_with_rule",
+            "preserve",
+            "not-applicable"
+          ]
+        },
+        "unmatched_policy": {
+          "type": "string",
+          "enum": [
+            "fail_closed",
+            "drop_with_count",
+            "preserve_unmatched",
+            "not-applicable"
+          ]
+        },
+        "transport": { "type": "string", "minLength": 1 },
+        "missing_key_behavior": {
+          "type": "string",
+          "enum": ["fail_closed", "block", "warn", "not_applicable"]
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_refs",
+        "observed_at",
+        "run_record_schema",
+        "required_run_fields"
+      ],
+      "properties": {
+        "source_refs": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "observed_at": { "type": "string", "format": "date" },
+        "run_record_schema": { "type": "string", "minLength": 1 },
+        "required_run_fields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "repository",
+              "input_manifest",
+              "artifact_manifest",
+              "command",
+              "executable",
+              "parameters",
+              "environment",
+              "reference_snapshots",
+              "verifier"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "ref", "status"],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": ["source", "fixture", "verifier", "run", "review"]
+          },
+          "ref": { "type": "string", "minLength": 1 },
+          "status": {
+            "type": "string",
+            "enum": ["FACT", "INFERENCE", "PROPOSAL", "UNKNOWN"]
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "module_refs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/module_ref" },
+      "minItems": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": { "const": "facade" }
+        }
+      },
+      "then": {
+        "required": ["module_refs"]
+      }
+    }
+  ],
+  "$defs": {
+    "identity_key": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "namespace", "scope", "unique_within", "required"],
+      "properties": {
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "namespace": { "type": "string", "minLength": 1 },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "case",
+            "run",
+            "sample",
+            "subject",
+            "branch",
+            "contrast",
+            "reference",
+            "artifact",
+            "configuration",
+            "tool",
+            "custom"
+          ]
+        },
+        "unique_within": {
+          "type": "string",
+          "enum": ["case", "run", "artifact", "component"]
+        },
+        "required": { "type": "boolean" }
+      }
+    },
+    "module_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_id",
+        "contract_path",
+        "schema_version",
+        "port_bindings"
+      ],
+      "properties": {
+        "component_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "contract_path": { "type": "string", "minLength": 1 },
+        "schema_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+$"
+        },
+        "port_bindings": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/port_binding" },
+          "minItems": 1
+        }
+      }
+    },
+    "port_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["module_port_id", "facade_port_id"],
+      "properties": {
+        "module_port_id": { "type": "string", "minLength": 1 },
+        "facade_port_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "port": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "port_id",
+        "direction",
+        "channel_semantics",
+        "shape",
+        "cardinality",
+        "identity_keys",
+        "required",
+        "on_missing"
+      ],
+      "properties": {
+        "port_id": { "type": "string", "minLength": 1 },
+        "direction": {
+          "type": "string",
+          "enum": ["input", "output"]
+        },
+        "channel_semantics": {
+          "type": "string",
+          "enum": ["queue", "value", "stream", "unknown"]
+        },
+        "shape": {
+          "type": "string",
+          "enum": [
+            "directory",
+            "path",
+            "value",
+            "tuple",
+            "table",
+            "matrix",
+            "json",
+            "report"
+          ]
+        },
+        "cardinality": {
+          "type": "string",
+          "enum": ["one", "one-or-more", "many", "optional"]
+        },
+        "tuple_fields": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "artifact_type": { "type": "string", "minLength": 1 },
+        "identity_keys": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "constraints": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "required": { "type": "boolean" },
+        "on_missing": {
+          "type": "string",
+          "enum": ["fail_closed", "warn", "block", "not_applicable"]
+        }
+      }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["route_id", "selected_by", "allowed_values", "estimand"],
+      "properties": {
+        "route_id": { "type": "string", "minLength": 1 },
+        "selected_by": { "type": "string", "minLength": 1 },
+        "allowed_values": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "estimand": { "type": "string", "minLength": 1 }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gate_id", "check", "on_fail"],
+      "properties": {
+        "gate_id": { "type": "string", "minLength": 1 },
+        "check": { "type": "string", "minLength": 1 },
+        "on_fail": {
+          "type": "string",
+          "enum": ["fail_closed", "block", "warn", "human_review"]
+        }
+      }
+    }
+  }
+}

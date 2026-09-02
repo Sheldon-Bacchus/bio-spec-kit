@@ -1,0 +1,61 @@
+case_id: "multiqc-mvp"
+component_id: "multiqc"
+split: "construction"
+variant_id: "construction-smoke"
+evaluation_role: "construction_smoke"
+status: "APPROVED_LOCAL_SMOKE_ONLY"
+task: "Aggregate one bounded FastQC input and preserve fixture-derived evidence in report/data/provenance artifacts."
+input:
+  directory: "specs/005-skills-nextflow-research-core/evaluation/cases/multiqc-mvp/inputs"
+  expected_sample: "test_R1"
+  expected_tool: "FastQC"
+  expected_total_sequences: 10000
+  expected_sequence_length: "100"
+  expected_percent_gc: 48
+environment:
+  wrapper: "extensions/bio-multiqc/scripts/run_multiqc.py"
+  config: "extensions/bio-multiqc/config/multiqc_config.yaml"
+  executable: ".venv/Scripts/multiqc.exe"
+permissions:
+  network: "not_required"
+  external_upload: false
+  sensitive_data: false
+outputs:
+  directory: "evaluation/runs/multiqc-mvp"
+  verifier: "specs/005-skills-nextflow-research-core/evaluation/cases/multiqc-mvp/verifier/verify_case.py"
+  status_record: "evaluation/runs/multiqc-mvp/research-core-status.json"
+expected_status:
+  execution: "passed"
+  scientific: "not-verified"
+  release: "pending"
+eligibility:
+  evaluated_before_run: true
+  eligible_for_a0_a3: false
+  reason: "construction smoke is not a paired A0-A3 evaluation cell"
+  required_checks:
+    - "case manifest schema is valid"
+    - "input paths and hashes are readable"
+    - "oracle is frozen and hidden from an evaluated Agent"
+    - "deterministic verifier is reachable"
+    - "network and external upload permissions are not required"
+  pre_run_exclusion_codes:
+    - "MISSING_INPUT"
+    - "MISSING_ORACLE"
+    - "MISSING_VERIFIER"
+    - "PERMISSION_DENIED"
+    - "BUDGET_UNAVAILABLE"
+    - "SCHEMA_INVALID"
+    - "CONSTRUCTION_LEAKAGE"
+failure_accounting:
+  eligible_timeout: "failure"
+  eligible_nonzero_execution: "failure"
+  eligible_missing_or_malformed_output: "failure"
+  eligible_verifier_error_or_fail: "failure"
+  eligible_malformed_trace: "failure"
+  eligible_unsupported_claim: "failure"
+repetition_policy:
+  count: 3
+  seed_policy: "sha256(protocol_version:case_id:variant_id:replicate_index) when executor supports seeds"
+  unavailable_seed_record: "seed_status: unavailable"
+  determinism: "strict"
+  cell_pass_rule: "all three repetitions pass and normalized output hashes agree"

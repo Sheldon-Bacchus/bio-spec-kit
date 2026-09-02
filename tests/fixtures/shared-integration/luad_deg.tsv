@@ -1,0 +1,6 @@
+gene_symbol	logFC	DEG	direction
+GENE_A	1.2	TRUE	up
+GENE_B	-1.4	TRUE	down
+GENE_C	1.8	TRUE	up
+GENE_D	-1.3	TRUE	down
+LUAD_ONLY	-1.1	TRUE	down
