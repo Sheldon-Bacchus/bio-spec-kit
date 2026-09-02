@@ -1,0 +1,28 @@
+schema_version: "1.0"
+
+extension:
+  id: "bio-qc"
+  name: "Bioinformatics QC"
+  version: "0.1.0"
+  description: "Evaluate machine-readable QC metrics against explicit thresholds."
+  author: "Sheldon-Bacchus"
+  repository: "https://github.com/Sheldon-Bacchus/bio-spec-kit"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=0.14.0"
+
+provides:
+  commands:
+    - name: "speckit.bio-qc.run"
+      file: "commands/run.md"
+      description: "Run or interpret deterministic QC checks"
+  scripts:
+    - name: "bio-qc-run"
+      file: "scripts/run_qc.py"
+
+tags:
+  - "bioinformatics"
+  - "qc"
+  - "quality-gate"
+
