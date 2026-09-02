@@ -1,0 +1,404 @@
+schema_version: "0.1"
+artifact_status: "FROZEN_AUDIT_SHAPE / NOT_RUNTIME"
+status_vocabulary:
+  - "有"
+  - "条件"
+  - "无"
+  - "待核"
+  - "不适用"
+  - "未验证"
+evidence_vocabulary:
+  - FACT
+  - INFERENCE
+  - PROPOSAL
+  - UNKNOWN
+record_schema:
+  required_fields:
+    - component_id
+    - kind
+    - source_role
+    - source_paths
+    - primary_stage
+    - scientific_purpose
+    - estimand_or_observable
+    - upstream_inputs
+    - preconditions
+    - method
+    - routes
+    - downstream_outputs
+    - identity_policy
+    - examples_tests
+    - provenance
+    - hard_boundary
+    - failure_recovery
+    - runtime_status
+    - merge_decision
+  field_value_shape: "{status: 有|条件|无|待核|不适用|未验证, value: ...}"
+  source_reference_shape: "{ref: repository-relative path or URL, evidence_status: FACT|INFERENCE|PROPOSAL|UNKNOWN}"
+records:
+  - component_id: "bulk-pa-luad"
+    kind: "project-adapter"
+    source_role: {status: "有", value: "PRIMARY_LOCAL_SKILL"}
+    source_paths:
+      status: "有"
+      value:
+        - "spec-mvp/skills/bulk-pa-luad/SKILL.md"
+        - "spec-mvp/skills/bulk-pa-luad/references/"
+        - ".agents/skills/bulk-pa-luad/SKILL.md"
+    primary_stage: {status: "待核", value: "Bio S04-S06 mapping; canonical S-stage assignment not frozen"}
+    scientific_purpose: {status: "有", value: "Estimate condition effects in paired bulk PA/LUAD expression data"}
+    estimand_or_observable: {status: "条件", value: "Signed condition contrast effect and multiplicity-adjusted evidence under the declared design; not causal effect"}
+    upstream_inputs: {status: "有", value: "Integer count matrix, sample metadata, subject/pairing, condition, contrast, organism/reference namespace, feature estimand"}
+    preconditions: {status: "有", value: "Complete metadata join, valid pairing, non-singular design, required R packages, count model compatible input"}
+    method: {status: "有", value: "edgeR QL count model with explicit filtering/normalization; limma paired/block check when requested"}
+    routes: {status: "有", value: "paired versus repeated-measures design; edgeR count route versus limma continuous-data route"}
+    downstream_outputs: {status: "有", value: "Filtered-count manifest, design/contrast record, DE tables, diagnostics, tested-gene universe, provenance"}
+    identity_policy: {status: "条件", value: "sample_id, subject_id and contrast_id must be explicit; current adapter documents rather than enforces tuple transport"}
+    examples_tests: {status: "条件", value: "R examples and references exist; pinned environment and deterministic end-to-end run are not verified here"}
+    provenance: {status: "条件", value: "Skill requires versions, parameters and hashes; current source does not provide a frozen run manifest"}
+    hard_boundary: {status: "有", value: "Does not claim a causal effect, replace a paired/repeated design with an unpaired design, or infer results without a valid tested universe"}
+    failure_recovery: {status: "有", value: "Fail closed on non-integer counts, incomplete joins, ambiguous pairing, singular design, missing packages or missing universe"}
+    runtime_status: {status: "有", value: "staged-adapter / not-verified"}
+    merge_decision: {status: "有", value: "merge-view with reference 02-deg; keep algorithm ownership separate"}
+    evidence_refs:
+      - {ref: "spec-mvp/skills/bulk-pa-luad/SKILL.md", evidence_status: FACT}
+      - {ref: "spec-mvp/skills/skill-catalog.yml", evidence_status: FACT}
+
+  - component_id: "cross-branch-integration"
+    kind: "project-adapter"
+    source_role: {status: "有", value: "PRIMARY_LOCAL_SKILL"}
+    source_paths:
+      status: "有"
+      value:
+        - "spec-mvp/skills/cross-branch-integration/SKILL.md"
+        - "spec-mvp/skills/cross-branch-integration/references/"
+        - ".agents/skills/cross-branch-integration/SKILL.md"
+    primary_stage: {status: "待核", value: "Bio S09-S10 mapping; canonical S-stage assignment not frozen"}
+    scientific_purpose: {status: "有", value: "Compare or integrate outputs from analysis branches while preserving correspondence and direction"}
+    estimand_or_observable: {status: "条件", value: "Descriptive overlap and direction strata; not evidence of shared causal mechanism"}
+    upstream_inputs: {status: "有", value: "Branch result tables or matrices, stable sample map, feature namespace, reference release, branch labels and effect convention"}
+    preconditions: {status: "有", value: "Provided correspondence, compatible namespace/assembly, comparable effect field, declared cutoff and non-confounded design for joint models"}
+    method: {status: "有", value: "Stable-key harmonization, intersection and up/up-down/down strata; joint models remain separate components"}
+    routes: {status: "有", value: "shared genes, direction concordance, subtype, latent-axis or predictive-signature question"}
+    downstream_outputs: {status: "有", value: "Sample-map audit, matched/unmatched records, intersection, direction strata, per-branch provenance and limitation report"}
+    identity_policy: {status: "有", value: "Stable subject_id/sample_id and gene_id namespace; row order is forbidden as correspondence"}
+    examples_tests: {status: "条件", value: "Usage guides and diagnostic script exist; independent fixture verification is incomplete"}
+    provenance: {status: "条件", value: "Branch-specific source, cutoff and namespace are required; frozen run manifest not verified"}
+    hard_boundary: {status: "有", value: "Does not infer correspondence or a shared causal mechanism, and does not own a joint model for the contributing branches"}
+    failure_recovery: {status: "有", value: "Block on inferred correspondence, namespace mismatch, missing effect, direction conflict, confounded batch or unsupported predictive claim"}
+    runtime_status: {status: "有", value: "staged-adapter / not-verified"}
+    merge_decision: {status: "有", value: "compose-only with bulk-pa-luad and reference DE results; integration ownership remains separate"}
+    evidence_refs:
+      - {ref: "spec-mvp/skills/cross-branch-integration/SKILL.md", evidence_status: FACT}
+      - {ref: "tests/fixtures/shared-integration/", evidence_status: FACT}
+
+  - component_id: "multiqc"
+    kind: "project-adapter"
+    source_role: {status: "有", value: "PRIMARY_LOCAL_SKILL"}
+    source_paths:
+      status: "有"
+      value:
+        - "spec-mvp/skills/multiqc/SKILL.md"
+        - "extensions/bio-multiqc/scripts/run_multiqc.py"
+        - "extensions/bio-multiqc/config/multiqc_config.yaml"
+        - ".agents/skills/multiqc/SKILL.md"
+    primary_stage: {status: "有", value: "Bio S01 quality-evidence handoff"}
+    scientific_purpose: {status: "有", value: "Aggregate bounded upstream QC evidence into a user-openable report and machine-readable artifact"}
+    estimand_or_observable: {status: "有", value: "Observed report content, parsed module data and source mapping; not a QC threshold verdict"}
+    upstream_inputs: {status: "有", value: "Existing input directory, expected sample/tool manifest, pinned config and fresh output directory"}
+    preconditions: {status: "有", value: "Input/config/executable exist, input contains intended module and output is not silently overwritten"}
+    method: {status: "有", value: "Project wrapper invokes real MultiQC CLI and checks HTML, JSON, source map, log and fixture-derived values"}
+    routes: {status: "有", value: "generic or fastqc-multiqc-mvp preset; required or explicitly visible skip mode"}
+    downstream_outputs: {status: "有", value: "HTML report, parsed data, source map, verdict, review note, logs, input/artifact manifests"}
+    identity_policy: {status: "条件", value: "Sample/tool identity comes from parsed report and expected manifest; tuple transport is represented in contract, not wrapper API"}
+    examples_tests: {status: "有", value: "tests/fixtures/multiqc and wrapper content checks provide a deterministic representative slice"}
+    provenance: {status: "有", value: "Wrapper records executable, MultiQC version, command, input manifest and artifact hashes"}
+    hard_boundary: {status: "有", value: "Does not define QC thresholds, approve scientific release, or merge report generation with differential-expression inference"}
+    failure_recovery: {status: "有", value: "Fail closed on missing input/config/executable, no parser match, missing artifacts or content verification failure; skip is not release-ready"}
+    runtime_status: {status: "有", value: "verified for local FastQC/MultiQC wrapper slice; scientific QC and release remain unverified/pending"}
+    merge_decision: {status: "有", value: "compose-only with downstream analysis; never merge QC evidence with DE or scientific release"}
+    evidence_refs:
+      - {ref: "spec-mvp/skills/multiqc/SKILL.md", evidence_status: FACT}
+      - {ref: "extensions/bio-multiqc/scripts/run_multiqc.py", evidence_status: FACT}
+      - {ref: "tests/fixtures/multiqc/", evidence_status: FACT}
+      - {ref: "specs/005-skills-nextflow-research-core/evaluation/runs/multiqc-mvp-20260902/", evidence_status: FACT}
+
+  - component_id: "pathway-enrichment"
+    kind: "project-adapter"
+    source_role: {status: "有", value: "PRIMARY_LOCAL_SKILL"}
+    source_paths:
+      status: "有"
+      value:
+        - "spec-mvp/skills/pathway-enrichment/SKILL.md"
+        - "spec-mvp/skills/pathway-enrichment/references/"
+        - ".agents/skills/pathway-enrichment/SKILL.md"
+    primary_stage: {status: "待核", value: "Bio S10-S11 mapping; canonical S-stage assignment not frozen"}
+    scientific_purpose: {status: "有", value: "Interpret executed DE or module results through explicit GO/KEGG enrichment routes"}
+    estimand_or_observable: {status: "条件", value: "Enrichment conditional on foreground, tested universe, mapping, method and database; hypothesis-generating only"}
+    upstream_inputs: {status: "有", value: "Executed result table or module list, tested universe for ORA, organism, ID namespace, direction, database release/date, method and thresholds"}
+    preconditions: {status: "有", value: "Declared ORA/GSEA input shape, shared ID mapping, explicit universe, valid organism/keyType and recorded database state"}
+    method: {status: "有", value: "ORA for thresholded list and GSEA for complete ranked list, with mapping audit and explicit ontology/database"}
+    routes: {status: "有", value: "ORA versus GSEA; GO ontology; KEGG versus local/frozen database; up/down split"}
+    downstream_outputs: {status: "有", value: "Mapping audit, mapped counts, enrichment tables, adjusted p-values, fold enrichment, overlaps, direction and provenance"}
+    identity_policy: {status: "条件", value: "gene_id namespace, organism, contrast_id and database release must travel with the result"}
+    examples_tests: {status: "条件", value: "R references and failure rules exist; local pinned runtime is not verified"}
+    provenance: {status: "有", value: "Database date/release, method, thresholds and mapping loss are required by the Skill"}
+    hard_boundary: {status: "有", value: "Does not replace the tested universe, establish causality, or use an unpinned live database as reproducible evidence"}
+    failure_recovery: {status: "有", value: "Fail closed on missing universe, incompatible IDs, unexplained mapping loss, missing ranking or unpinned KEGG"}
+    runtime_status: {status: "有", value: "staged-adapter / not-verified"}
+    merge_decision: {status: "有", value: "compose-only with pathway workflow and database-specific references"}
+    evidence_refs:
+      - {ref: "spec-mvp/skills/pathway-enrichment/SKILL.md", evidence_status: FACT}
+      - {ref: "spec-mvp/skills/reference-stack/04-pathway-workflow/SKILL.md", evidence_status: FACT}
+
+  - component_id: "wgcna-module-constraint"
+    kind: "project-adapter"
+    source_role: {status: "有", value: "PRIMARY_LOCAL_SKILL"}
+    source_paths:
+      status: "有"
+      value:
+        - "spec-mvp/skills/wgcna-module-constraint/SKILL.md"
+        - "spec-mvp/skills/wgcna-module-constraint/references/"
+        - ".agents/skills/wgcna-module-constraint/SKILL.md"
+    primary_stage: {status: "待核", value: "Bio S07-S09 mapping; canonical S-stage assignment not frozen"}
+    scientific_purpose: {status: "有", value: "Discover and constrain bulk co-expression modules for trait association and downstream handoff"}
+    estimand_or_observable: {status: "条件", value: "Module-trait association, signed kME and stability/preservation observables; not directed causal regulation"}
+    upstream_inputs: {status: "有", value: "Normalized bulk expression, sample traits, subject/batch metadata, gene namespace and approved module policy"}
+    preconditions: {status: "有", value: "Minimum sample rule, valid traits, non-singular design, explicit network/power/outlier choices and stability rule"}
+    method: {status: "有", value: "Signed WGCNA with quality checks, module detection, eigengene-trait association and kME hubs"}
+    routes: {status: "有", value: "network type, soft power, block/outlier policy and stability/preservation route"}
+    downstream_outputs: {status: "有", value: "QC, network parameters, module labels, eigengenes, trait statistics, hub table and constrained gene sets"}
+    identity_policy: {status: "条件", value: "sample_id, trait_id, gene_id and reference namespace must be explicit; current adapter documents rather than enforces transport"}
+    examples_tests: {status: "条件", value: "R example and usage guide exist; stability fixture is not verified"}
+    provenance: {status: "条件", value: "Parameters and package versions are required; no frozen run manifest in this feature"}
+    hard_boundary: {status: "有", value: "Does not claim directed causal regulation or release a module interpretation without its declared stability/preservation evidence"}
+    failure_recovery: {status: "有", value: "Stop or reference-only on small cohort, singular design, network mismatch, grey-module misuse or unverified stability"}
+    runtime_status: {status: "有", value: "staged-adapter / not-verified"}
+    merge_decision: {status: "有", value: "keep-separate from DEG; compose-only handoff to pathway enrichment after stability gate"}
+    evidence_refs:
+      - {ref: "spec-mvp/skills/wgcna-module-constraint/SKILL.md", evidence_status: FACT}
+      - {ref: "spec-mvp/skills/wgcna-module-constraint/references/wgcna_analysis.R", evidence_status: FACT}
+
+  - component_id: "01-mds"
+    kind: "reference"
+    source_role: {status: "有", value: "REFERENCE_LOCAL_SKILL"}
+    source_paths:
+      status: "有"
+      value:
+        - "spec-mvp/skills/reference-stack/01-mds/SKILL.md"
+        - "spec-mvp/skills/reference-stack/01-mds/examples/"
+        - "spec-mvp/skills/reference-stack-zh-CN/01-mds/SKILL.md"
+    primary_stage: {status: "待核", value: "Bio S03 exploratory visualization mapping; canonical S-stage assignment not frozen"}
+    scientific_purpose: {status: "有", value: "Explore high-dimensional sample structure with method-appropriate projections"}
+    estimand_or_observable: {status: "有", value: "Projected coordinates and variance/local-neighborhood observables; not global biological distances"}
+    upstream_inputs: {status: "有", value: "Normalized expression or omics matrix, sample metadata and method parameters"}
+    preconditions: {status: "有", value: "Method-compatible preprocessing, version check, seed where stochastic and explicit interpretation limits"}
+    method: {status: "有", value: "PCA, MDS, t-SNE, UMAP, PHATE or diffusion map selected by the question"}
+    routes: {status: "有", value: "Variance, local structure, manifold or trajectory route"}
+    downstream_outputs: {status: "有", value: "Coordinates, loadings/variance diagnostics where applicable, figures and interpretation limits"}
+    identity_policy: {status: "条件", value: "sample_id must remain attached to coordinates; plot labels are not a substitute for metadata"}
+    examples_tests: {status: "条件", value: "Examples exist; execution against a pinned feature fixture is not verified"}
+    provenance: {status: "条件", value: "Package versions and random seed are required for reproducibility; run record absent"}
+    hard_boundary: {status: "有", value: "Does not infer global biological distance, causality, or an independent validation result from a projection"}
+    failure_recovery: {status: "有", value: "Stop or qualify interpretation when preprocessing, dimensions, seed or method assumptions are invalid"}
+    runtime_status: {status: "有", value: "reference-only"}
+    merge_decision: {status: "有", value: "compose-only with QC/DE inputs; keep projection semantics separate"}
+    evidence_refs:
+      - {ref: "spec-mvp/skills/reference-stack/01-mds/SKILL.md", evidence_status: FACT}
+      - {ref: "spec-mvp/skills/reference-stack-zh-CN/01-mds/SKILL.md", evidence_status: FACT}
+
+  - component_id: "02-deg"
+    kind: "reference"
+    source_role: {status: "有", value: "REFERENCE_LOCAL_SKILL"}
+    source_paths:
+      status: "有"
+      value:
+        - "spec-mvp/skills/reference-stack/02-deg/SKILL.md"
+        - "spec-mvp/skills/reference-stack/02-deg/scripts/"
+        - "spec-mvp/skills/reference-stack-zh-CN/02-deg/SKILL.md"
+    primary_stage: {status: "待核", value: "Bio S04-S06 reference mapping; canonical S-stage assignment not frozen"}
+    scientific_purpose: {status: "有", value: "Provide general differential-expression method guidance and execution examples"}
+    estimand_or_observable: {status: "条件", value: "Model-specific differential effect and test statistic under declared design; method-dependent"}
+    upstream_inputs: {status: "有", value: "Expression matrix, group/design metadata, method, contrast and thresholds"}
+    preconditions: {status: "有", value: "Input type, design, normalization and method/package compatibility"}
+    method: {status: "有", value: "limma, DESeq2, edgeR and simple tests are described as separate routes"}
+    routes: {status: "有", value: "Count-model, continuous-data and simple-test routes; no implicit method choice"}
+    downstream_outputs: {status: "有", value: "DE result table, diagnostics and visualization handoff"}
+    identity_policy: {status: "条件", value: "gene_id, sample_id and contrast_id are required conceptually; reference prose does not enforce transport"}
+    examples_tests: {status: "条件", value: "Scripts, sample data and validation commands exist; pinned full run not verified"}
+    provenance: {status: "条件", value: "Version and parameter recording is discussed; reference package is not a frozen runtime"}
+    hard_boundary: {status: "有", value: "Does not hide method selection, silently change the estimand, or replace the project-specific adapter contract"}
+    failure_recovery: {status: "有", value: "Input and method errors are described; unsupported design must stop or be clarified"}
+    runtime_status: {status: "有", value: "reference-only"}
+    merge_decision: {status: "有", value: "merge-view with bulk-pa-luad; reference method prose does not replace the project adapter"}
+    evidence_refs:
+      - {ref: "spec-mvp/skills/reference-stack/02-deg/SKILL.md", evidence_status: FACT}
+      - {ref: "spec-mvp/skills/reference-stack/02-deg/scripts/", evidence_status: FACT}
+
+  - component_id: "02-deg-results"
+    kind: "reference"
+    source_role: {status: "有", value: "REFERENCE_LOCAL_SKILL"}
+    source_paths:
+      status: "有"
+      value:
+        - "spec-mvp/skills/reference-stack/02-deg-results/SKILL.md"
+        - "spec-mvp/skills/reference-stack/02-deg-results/examples/"
+        - "spec-mvp/skills/reference-stack-zh-CN/02-deg-results/SKILL.md"
+    primary_stage: {status: "待核", value: "Bio S06-S08 result curation mapping; canonical S-stage assignment not frozen"}
+    scientific_purpose: {status: "有", value: "Extract, filter, annotate and export results without changing the upstream estimand"}
+    estimand_or_observable: {status: "有", value: "Observable result subsets, annotations and downstream-ready foreground/ranking; no new statistical inference"}
+    upstream_inputs: {status: "有", value: "Executed DE result object/table, annotation mapping and explicit filters"}
+    preconditions: {status: "有", value: "Preserve NA semantics, identify contrast/statistic and declare filtering/annotation policy"}
+    method: {status: "有", value: "Result extraction, multiple-testing-aware filtering, annotation and ORA/GSEA input preparation"}
+    routes: {status: "有", value: "thresholded foreground versus complete ranking; up/down and annotation routes"}
+    downstream_outputs: {status: "有", value: "Filtered tables, gene annotations, signed ranking, ORA foreground/universe and exported artifacts"}
+    identity_policy: {status: "条件", value: "gene_id and contrast_id must be retained; result table shape is documented but not contract-enforced"}
+    examples_tests: {status: "条件", value: "Examples and data exist; deterministic contract verification is not established"}
+    provenance: {status: "条件", value: "Source result and filter parameters should be retained; frozen manifest not verified"}
+    hard_boundary: {status: "有", value: "Does not alter the upstream estimand, silently drop meaningful NA values, or replace the tested universe"}
+    failure_recovery: {status: "有", value: "Do not silently drop meaningful NA or replace a tested universe; report unusable inputs"}
+    runtime_status: {status: "有", value: "reference-only"}
+    merge_decision: {status: "有", value: "compose-only with 02-deg, pathway workflow and visualization components"}
+    evidence_refs:
+      - {ref: "spec-mvp/skills/reference-stack/02-deg-results/SKILL.md", evidence_status: FACT}
+      - {ref: "spec-mvp/skills/reference-stack-zh-CN/02-deg-results/SKILL.md", evidence_status: FACT}
+
+  - component_id: "03-de-visualization"
+    kind: "reference"
+    source_role: {status: "有", value: "REFERENCE_LOCAL_SKILL"}
+    source_paths:
+      status: "有"
+      value:
+        - "spec-mvp/skills/reference-stack/03-de-visualization/SKILL.md"
+        - "spec-mvp/skills/reference-stack/03-de-visualization/examples/"
+        - "spec-mvp/skills/reference-stack-zh-CN/03-de-visualization/SKILL.md"
+    primary_stage: {status: "待核", value: "Bio S08 visualization mapping; canonical S-stage assignment not frozen"}
+    scientific_purpose: {status: "有", value: "Visualize executed differential-expression results with explicit scale and interpretation limits"}
+    estimand_or_observable: {status: "有", value: "Visual display of effect, significance and sample/result structure; not an independent validation"}
+    upstream_inputs: {status: "有", value: "DE results with signed effect, p/adjusted p fields, metadata and declared thresholds"}
+    preconditions: {status: "有", value: "Use the correct effect/statistic fields, declare transformations and retain labels/identity"}
+    method: {status: "有", value: "PCA/heatmap/MA/volcano-related visualization guidance and reproducible plot settings"}
+    routes: {status: "有", value: "plot type selected by observable; threshold and annotation policies explicit"}
+    downstream_outputs: {status: "有", value: "Figures, plot data and captions/limitations"}
+    identity_policy: {status: "条件", value: "gene_id/sample_id/contrast_id should be retained in plot data; visual labels alone are insufficient"}
+    examples_tests: {status: "条件", value: "R examples exist; artifact-level visual verifier is not verified"}
+    provenance: {status: "条件", value: "Plot parameters and package versions are expected; run manifest absent"}
+    hard_boundary: {status: "有", value: "Does not serve as independent statistical validation or convert a visual pattern into a new inferential claim"}
+    failure_recovery: {status: "有", value: "Qualify or stop when fields, scale, labels or thresholds are inconsistent"}
+    runtime_status: {status: "有", value: "reference-only"}
+    merge_decision: {status: "有", value: "compose-only with DE results; not merged with statistical inference"}
+    evidence_refs:
+      - {ref: "spec-mvp/skills/reference-stack/03-de-visualization/SKILL.md", evidence_status: FACT}
+      - {ref: "spec-mvp/skills/reference-stack-zh-CN/03-de-visualization/SKILL.md", evidence_status: FACT}
+
+  - component_id: "03-volcano"
+    kind: "reference"
+    source_role: {status: "有", value: "REFERENCE_LOCAL_SKILL"}
+    source_paths:
+      status: "有"
+      value:
+        - "spec-mvp/skills/reference-stack/03-volcano/SKILL.md"
+        - "spec-mvp/skills/reference-stack/03-volcano/examples/"
+        - "spec-mvp/skills/reference-stack-zh-CN/03-volcano/SKILL.md"
+    primary_stage: {status: "待核", value: "Bio S08 visualization mapping; canonical S-stage assignment not frozen"}
+    scientific_purpose: {status: "有", value: "Display signed effect size against significance with shrinkage and labeling discipline"}
+    estimand_or_observable: {status: "有", value: "Visualized signed effect and p/adjusted-p observables; not a new significance test"}
+    upstream_inputs: {status: "有", value: "DE table with shrunken or declared effect, p-value fields, gene identifiers and thresholds"}
+    preconditions: {status: "有", value: "Use compatible effect/p fields, preselect labels explicitly and record shrinkage method"}
+    method: {status: "有", value: "ggplot2/ggrepel and EnhancedVolcano patterns plus MA diagnostics"}
+    routes: {status: "有", value: "shrinkage method, significance class, label policy and plot scale"}
+    downstream_outputs: {status: "有", value: "Volcano/MA figures, plot data and caveat text"}
+    identity_policy: {status: "条件", value: "gene_id and contrast_id remain in plot data; labels cannot reconstruct the full identity set"}
+    examples_tests: {status: "条件", value: "Examples exist; deterministic figure-content verification is not established"}
+    provenance: {status: "条件", value: "Shrinkage, thresholds, package versions and source result should be recorded; run manifest absent"}
+    hard_boundary: {status: "有", value: "Does not run a new significance test, equate a visual cutoff with significance, or hide raw versus adjusted fields"}
+    failure_recovery: {status: "有", value: "Avoid raw/adjusted axis mismatch, silent label loss, wrong shrinkage or top-N interpretation"}
+    runtime_status: {status: "有", value: "reference-only"}
+    merge_decision: {status: "有", value: "compose-only with 03-de-visualization and DE results"}
+    evidence_refs:
+      - {ref: "spec-mvp/skills/reference-stack/03-volcano/SKILL.md", evidence_status: FACT}
+      - {ref: "spec-mvp/skills/reference-stack-zh-CN/03-volcano/SKILL.md", evidence_status: FACT}
+
+  - component_id: "04-pathway-enricher"
+    kind: "reference"
+    source_role: {status: "有", value: "REFERENCE_LOCAL_SKILL"}
+    source_paths:
+      status: "有"
+      value:
+        - "spec-mvp/skills/reference-stack/04-pathway-enricher/SKILL.md"
+        - "spec-mvp/skills/reference-stack/04-pathway-enricher/pathway_enricher.py"
+        - "spec-mvp/skills/reference-stack-zh-CN/04-pathway-enricher/SKILL.md"
+    primary_stage: {status: "待核", value: "Bio S10-S11 database adapter mapping; canonical S-stage assignment not frozen"}
+    scientific_purpose: {status: "有", value: "Query gene-set databases and produce ranked pathway summaries and plots"}
+    estimand_or_observable: {status: "条件", value: "Database-query enrichment score/ranking conditional on the external library and input list"}
+    upstream_inputs: {status: "有", value: "Gene list, database/library selection and optional organism context"}
+    preconditions: {status: "条件", value: "ID namespace, network access, database availability and privacy boundary must be explicit"}
+    method: {status: "有", value: "Enrichr REST API adapter with ranked tables, plots and Markdown report"}
+    routes: {status: "有", value: "KEGG, GO, Reactome, WikiPathways, MSigDB and disease libraries"}
+    downstream_outputs: {status: "有", value: "Ranked pathway table, figures, report, commands/checksum/environment artifacts"}
+    identity_policy: {status: "条件", value: "gene_id namespace and library/version must be carried with result; external response identity is not frozen"}
+    examples_tests: {status: "条件", value: "Python implementation and demo mode exist; external API run is not verified in this feature"}
+    provenance: {status: "条件", value: "Commands and checksums are proposed; API response release/date is not frozen"}
+    hard_boundary: {status: "有", value: "Does not bypass the privacy/database-pin gate or claim more than the selected external library and input list support"}
+    failure_recovery: {status: "有", value: "Block or qualify on network/API failure, mapping loss, unpinned library or sensitive-data boundary"}
+    runtime_status: {status: "有", value: "reference-only / not-verified"}
+    merge_decision: {status: "有", value: "keep-separate from pathway-enrichment core and compose-only at handoff"}
+    evidence_refs:
+      - {ref: "spec-mvp/skills/reference-stack/04-pathway-enricher/SKILL.md", evidence_status: FACT}
+      - {ref: "spec-mvp/skills/reference-stack/04-pathway-enricher/pathway_enricher.py", evidence_status: FACT}
+
+  - component_id: "04-pathway-workflow"
+    kind: "reference"
+    source_role: {status: "有", value: "REFERENCE_LOCAL_SKILL"}
+    source_paths:
+      status: "有"
+      value:
+        - "spec-mvp/skills/reference-stack/04-pathway-workflow/SKILL.md"
+        - "spec-mvp/skills/reference-stack/04-pathway-workflow/examples/"
+        - "spec-mvp/skills/reference-stack-zh-CN/04-pathway-workflow/SKILL.md"
+    primary_stage: {status: "待核", value: "Bio S10-S12 orchestration mapping; canonical S-stage assignment not frozen"}
+    scientific_purpose: {status: "有", value: "Route executed DE results to appropriate ORA/GSEA database methods and redundancy review"}
+    estimand_or_observable: {status: "条件", value: "Pathway enrichment conditional on generation, universe, mapping and database; interpretation is hypothesis generation"}
+    upstream_inputs: {status: "有", value: "DE result/ranking, ID mapping, tested universe, organism, database and method parameters"}
+    preconditions: {status: "有", value: "Decide ORA versus GSEA before execution, preserve ranking/universe, set seed for stochastic methods and pin database"}
+    method: {status: "有", value: "Generation fork, per-method ID conversion, enrichGO/enrichKEGG/enrichPathway/gse routes and redundancy collapse"}
+    routes: {status: "有", value: "ORA versus GSEA; GO/KEGG/Reactome/WikiPathways; up/down and live/frozen database branches"}
+    downstream_outputs: {status: "有", value: "Enrichment tables, leading-edge/overlap information, collapsed visualization and provenance"}
+    identity_policy: {status: "条件", value: "contrast_id, gene namespace, organism, universe and database release must travel together"}
+    examples_tests: {status: "条件", value: "Extensive reference examples and failure modes exist; local full workflow is not verified"}
+    provenance: {status: "有", value: "Ranking metric, universe, method, p-adjustment, seed and database date/release are required"}
+    hard_boundary: {status: "有", value: "Does not conflate generation, ORA and GSEA routes or allow a database-dependent result to exceed its declared claim boundary"}
+    failure_recovery: {status: "有", value: "Fail closed on missing universe, wrong IDs, missing ranking, unpinned live DB or unsupported claim"}
+    runtime_status: {status: "有", value: "reference-only"}
+    merge_decision: {status: "有", value: "compose-only with pathway-enrichment adapter, 04-pathway-enricher and 05-kegg"}
+    evidence_refs:
+      - {ref: "spec-mvp/skills/reference-stack/04-pathway-workflow/SKILL.md", evidence_status: FACT}
+      - {ref: "spec-mvp/skills/reference-stack-zh-CN/04-pathway-workflow/SKILL.md", evidence_status: FACT}
+
+  - component_id: "05-kegg"
+    kind: "reference"
+    source_role: {status: "有", value: "REFERENCE_LOCAL_SKILL"}
+    source_paths:
+      status: "有"
+      value:
+        - "spec-mvp/skills/reference-stack/05-kegg/SKILL.md"
+        - "spec-mvp/skills/reference-stack/05-kegg/examples/"
+        - "spec-mvp/skills/reference-stack-zh-CN/05-kegg/SKILL.md"
+    primary_stage: {status: "待核", value: "Bio S11-S12 database/topology mapping; canonical S-stage assignment not frozen"}
+    scientific_purpose: {status: "有", value: "Analyze KEGG membership, ranked enrichment or signed pathway topology with explicit database identity"}
+    estimand_or_observable: {status: "条件", value: "KEGG gene-set or topology perturbation observable conditional on organism, key type, release and method"}
+    upstream_inputs: {status: "有", value: "Gene list/ranking/fold-change vector, organism, keyType, tested universe and KEGG release/snapshot"}
+    preconditions: {status: "有", value: "Correct IDs, explicit generation, signaling-map condition for SPIA and frozen/live database declaration"}
+    method: {status: "有", value: "enrichKEGG/enrichMKEGG, gseKEGG and SPIA/graphite as distinct generations"}
+    routes: {status: "有", value: "ORA, GSEA, module membership or signed topology; model versus prokaryote/KO mapping"}
+    downstream_outputs: {status: "有", value: "KEGG result tables, topology statistics, map overlays and database provenance"}
+    identity_policy: {status: "有", value: "organism, keyType, gene_id, contrast_id and KEGG snapshot/access date are part of result identity"}
+    examples_tests: {status: "条件", value: "R examples exist; live/frozen reproducibility run is not verified"}
+    provenance: {status: "有", value: "Access date or gson snapshot, key type, organism and method are required"}
+    hard_boundary: {status: "有", value: "Does not generalize KEGG-specific evidence to other databases or use SPIA/topology semantics without the required signaling map"}
+    failure_recovery: {status: "有", value: "Stop on wrong key type, missing universe, missing release/date, non-signaling SPIA route or live DB without pinning"}
+    runtime_status: {status: "有", value: "reference-only / not-verified"}
+    merge_decision: {status: "有", value: "keep-separate as KEGG-specific method; compose-only with pathway workflow"}
+    evidence_refs:
+      - {ref: "spec-mvp/skills/reference-stack/05-kegg/SKILL.md", evidence_status: FACT}
+      - {ref: "spec-mvp/skills/reference-stack-zh-CN/05-kegg/SKILL.md", evidence_status: FACT}

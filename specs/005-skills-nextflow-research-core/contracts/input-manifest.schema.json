@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bio-spec-kit.local/specs/005-skills-nextflow-research-core/contracts/input-manifest.schema.json",
+  "title": "Research Core repository-relative input manifest",
+  "description": "Hashes and repository-relative identities for the inputs of one local run.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "path_base", "input_root", "files", "sha256"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "path_base": {
+      "const": "repository-root"
+    },
+    "input_root": {
+      "$ref": "#/$defs/repository_path"
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "size", "sha256"],
+        "properties": {
+          "path": {
+            "$ref": "#/$defs/repository_path"
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sha256": {
+            "$ref": "#/$defs/sha256"
+          }
+        }
+      }
+    },
+    "sha256": {
+      "$ref": "#/$defs/sha256"
+    }
+  },
+  "$defs": {
+    "repository_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?![\\\\/])(?!.*(?:^|/)\\.\\.(?:/|$))[^\\r\\n]+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

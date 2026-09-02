@@ -1,0 +1,33 @@
+{
+  "schema_version": "0.1",
+  "run_id": "multiqc-mvp-20260902",
+  "path_base": "repository-root",
+  "run_root": "specs/005-skills-nextflow-research-core/evaluation/runs/multiqc-mvp-20260902",
+  "generated_at": "2026-09-02T04:52:14.704492+00:00",
+  "artifacts": [
+    {
+      "path": "specs/005-skills-nextflow-research-core/evaluation/runs/multiqc-mvp-20260902/multiqc_report.html",
+      "exists": true,
+      "size": 2190392,
+      "sha256": "605962ac638bc3c241d24d068ae8a23cd152fd44a18fdd2bb76fcb607b5e1e1b"
+    },
+    {
+      "path": "specs/005-skills-nextflow-research-core/evaluation/runs/multiqc-mvp-20260902/multiqc_report_data/multiqc_data.json",
+      "exists": true,
+      "size": 76259,
+      "sha256": "4c20b5b68af3ee14530b52a85836fc7544d945c337d560de2d5ae0c65701754f"
+    },
+    {
+      "path": "specs/005-skills-nextflow-research-core/evaluation/runs/multiqc-mvp-20260902/multiqc_report_data/multiqc.log",
+      "exists": true,
+      "size": 11889,
+      "sha256": "b275543b3d70c8a4e534510643bba67d656db3bc2b758365647a9a33e1ef9358"
+    },
+    {
+      "path": "specs/005-skills-nextflow-research-core/evaluation/runs/multiqc-mvp-20260902/multiqc_report_data/multiqc_sources.json",
+      "exists": true,
+      "size": 198,
+      "sha256": "eed9084d63fb598cf1c8a72a91d28636762e9abc8a0754230bd2d822c1e8240e"
+    }
+  ]
+}

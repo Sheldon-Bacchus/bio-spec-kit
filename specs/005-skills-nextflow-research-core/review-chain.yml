@@ -1,0 +1,45 @@
+schema_version: "0.1"
+status: configured
+scope: specs/005-skills-nextflow-research-core/**
+install_root: C:/Users/ldc/.codex/skills
+
+skills:
+  - id: summarization
+    source: arjunprabhulal/agent-skills@main
+    source_path: skills/research/summarization
+    role: lossy purpose-and-budget compression
+    input: completed Spec Kit component set
+    output: compressed-overview.md
+  - id: review-skill
+    source: mongodb/agent-skills@main
+    source_path: tools/review-skill
+    mode: structural-only
+    role: Agent Skill quality review
+    checks: [token_efficiency, scope_discipline, directive_precision, novelty]
+    input: four installed Skill directories
+    output: review/skill-review-20260902.md
+  - id: architecture-critic
+    source: nima-karami/agentic-development@main
+    source_path: skills/architecture-critic
+    role: fresh-context adversarial design review
+    input: Spec Kit artifacts and current bounded design
+    output: review/architecture-critique-20260902.md
+  - id: skill-forge
+    source: bm629/agent-skills@main
+    source_path: skills/skill-forge
+    role: later synthesis of approved findings into a reusable Skill
+    mode: deferred
+    input: approved audit findings and source evidence
+    output: future audit-distill or audit-critic Skill
+
+order:
+  current: [summarization, review-skill, architecture-critic]
+  deferred: [skill-forge]
+
+gates:
+  - no_extra_skill_install
+  - no_target_mutation_during_review
+  - structural_validator_required_for_review_skill
+  - architecture_critic_must_use_fresh_context
+  - every_finding_requires_file_line_anchor
+  - skill_forge_requires_explicit_approval

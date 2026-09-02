@@ -1,0 +1,42 @@
+schema_version: "0.1"
+contract_id: "research-core-profile"
+status: "approved-design / bounded-slice-remediated / reusable-core-not-generalized"
+source_feature: "specs/005-skills-nextflow-research-core"
+core:
+  owns:
+    - "public component contract shape and named ports"
+    - "queue/value, shape, cardinality and stable identity vocabulary"
+    - "static capability contract plus per-run provenance/status envelope"
+    - "gate and deterministic verifier interfaces"
+    - "evaluation protocol skeleton and trace adapter boundary"
+  does_not_own:
+    - "organism-specific semantics"
+    - "statistical method defaults"
+    - "tool/process implementation"
+    - "scientific claim or human release approval"
+bio_profile:
+  owns:
+    - "Bio S00-S13 stage vocabulary"
+    - "organism, reference and identifier namespace semantics"
+    - "estimand vocabulary and method route constraints"
+    - "tested-universe, QC and domain-specific failure rules"
+  does_not_own:
+    - "Spec Kit lifecycle definition"
+    - "generic port transport"
+    - "executor implementation"
+    - "human approval record"
+bindings:
+  - component_id: "multiqc"
+    skill_path: "spec-mvp/skills/multiqc/SKILL.md"
+    contract_path: "specs/005-skills-nextflow-research-core/contracts/multiqc/node.contract.json"
+    primary_stage: "Bio S01 quality-evidence handoff"
+    runtime_status: "verified for local artifact slice; unseen validation not run; scientific/release status separate"
+  - component_id: "bulk-pa-luad"
+    skill_path: "spec-mvp/skills/bulk-pa-luad/SKILL.md"
+    contract_path: "not-created in this implementation slice"
+    primary_stage: "Bio S04-S06 pending canonical mapping"
+    runtime_status: "staged-adapter / not-verified"
+verification:
+  schema_source: "specs/005-skills-nextflow-research-core/contracts/node-contract.schema.json"
+  boundary_source: "specs/005-skills-nextflow-research-core/contracts/core-profile-boundary.md"
+  approval_source: "specs/005-skills-nextflow-research-core/review/approval.md"

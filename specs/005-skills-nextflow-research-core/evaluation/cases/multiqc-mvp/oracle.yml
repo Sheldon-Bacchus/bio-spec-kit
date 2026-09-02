@@ -1,0 +1,20 @@
+case_id: "multiqc-mvp"
+oracle_visibility: "development-only; hide from evaluated Agent in a real comparison"
+required:
+  - "execution completes with a zero wrapper return code"
+  - "HTML report is non-empty and contains FastQC, test_R1, 10000, 100 and 48"
+  - "MultiQC parsed JSON, source map and log exist"
+  - "verdict and review note are present"
+  - "research-core-status.json has exact execution/scientific/release status fields"
+  - "input and artifact manifests contain hashes"
+  - "human release remains pending even when artifact checks pass"
+forbidden:
+  - "treating report generation as a QC threshold pass"
+  - "treating exit 0 as a scientific claim"
+  - "using network summary or uploading the fixture"
+expected:
+  route: "fastqc-multiqc-mvp"
+  state: "READY_FOR_ARTIFACT_REVIEW"
+  execution_status: "passed"
+  scientific_status: "not-verified"
+  release_status: "pending"

@@ -1,0 +1,12 @@
+case_id: "multiqc-mvp-negative-missing-input"
+component_id: "multiqc"
+split: "dev"
+status: "APPROVED_NEGATIVE"
+input:
+  directory: "evaluation/cases/multiqc-mvp/inputs/does-not-exist"
+expected:
+  wrapper_return_code: 2
+  verdict_status: "failed"
+  ok: false
+  release_ready: false
+  error_contains: "does not exist"
