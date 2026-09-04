@@ -1,7 +1,0 @@
-{
-    "FastQC": {
-        "all_sections": {
-            "test_R1": "specs/005-skills-nextflow-research-core/evaluation/cases/multiqc-mvp/inputs/sample_fastqc/fastqc_data.txt"
-        }
-    }
-}

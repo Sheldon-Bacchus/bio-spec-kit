@@ -2,37 +2,30 @@
 
 Reusable GitHub Spec Kit components for evidence-first bioinformatics work.
 
-The unified project map, decision log, MVP boundaries, validation layers, and
-current implementation status are maintained in
-[BIO-SPEC-KIT-REFERENCE.md](BIO-SPEC-KIT-REFERENCE.md). Read that file first
-before adding a new preset, extension, workflow, Skill, or research Feature.
+The MVP boundary and package decisions are maintained in
+[`prest-spec-mvp/`](prest-spec-mvp/) and [`skills/`](skills/). Read those
+boundaries before adding a new Preset, Bio Skill, Extension, or research
+Feature.
 
 This repository is intentionally a composition layer around Spec Kit:
 
-- `presets/bioinformatics` changes the language, templates, and agent prompts.
-- `extensions/*` provide deterministic checks and reusable commands.
-- `workflows/*` define lifecycle order and human review gates.
+- `prest-spec-mvp` is the narrow Spec Kit control-plane Preset.
+- `skills/*` is the Bio Skill capability plane and owns scientific methods.
+- `presets/bioinformatics` is a broader Preset, separate from the MVP.
+- `extensions/*` are deferred deterministic bridges and reusable commands.
+- `workflows/*` are broader execution surfaces, separate from the MVP.
 - `bundles/*` package a tested stack for one-command installation.
 
 The actual scientific computation remains in Nextflow, Snakemake, or another
 versioned pipeline engine. Spec Kit coordinates intent, evidence, review, and
 reproducibility; it is not a replacement for a workflow engine.
 
-## First workflow
+## Control-plane MVP
 
-The initial workflow is `bulk-rnaseq`. It expects a project with:
-
-```text
-.bio/
-├── manifest.json
-├── samples.tsv
-├── qc/metrics.json
-└── pipeline/
-    ├── main.nf       # when engine=nextflow
-    └── Snakefile     # when engine=snakemake
-```
-
-The pipeline engine can be set to `skip` for a dry lifecycle test.
+The first publishable slice is the `prest-spec-mvp` Preset. It defines the
+minimum Spec Kit artifacts needed to state a research question, plan, task
+list, capability binding, acceptance boundary, and evidence requirement. It
+does not run a pipeline or select a Bio Skill automatically.
 
 ## Local development
 
@@ -40,14 +33,10 @@ From a clean Spec Kit project:
 
 ```powershell
 specify init --here --integration codex --force
-specify preset add --dev .\presets\bioinformatics
-specify extension add --dev .\extensions\bio-intake
-specify extension add --dev .\extensions\bio-qc
-specify extension add --dev .\extensions\bio-pipeline
-specify extension add --dev .\extensions\bio-provenance
-specify extension add --dev .\extensions\bio-review
-specify workflow add --dev .\workflows\bulk-rnaseq
-specify workflow run bulk-rnaseq -i engine=skip
+specify preset add --dev .\prest-spec-mvp
+specify preset info bio-spec-mvp
+specify preset resolve spec-template
+specify preset resolve plan-template
 ```
 
 The package can be installed as a local bundle after validation:
@@ -58,58 +47,58 @@ specify bundle build --path .\bundles\bioinformatics-core --output .\dist
 specify bundle install .\dist\bioinformatics-core-0.1.0.zip
 ```
 
-## Official-first research MVP
+## BioSpec MVP control plane
 
-The narrower research MVP keeps the official Spec Kit lifecycle and adds only
-research fields to the templates plus one callable workflow. It is deliberately
-separate from the broader `bioinformatics` preset and from the five research
-design documents.
+The narrowest research package is [`prest-spec-mvp/`](prest-spec-mvp/). It is a
+standalone Spec Kit Preset with the same publication shape as a community
+Preset: `preset.yml`, `commands/`, `docs/`, `scripts/`, `templates/`, and
+`tests/`. It contains no generated results, worker runtime, dataset, Workflow,
+or scientific analysis implementation.
 
-```powershell
-specify preset add --dev .\presets\bio-research-mvp
-specify extension add --dev .\extensions\bio-multiqc
-specify extension add --dev .\extensions\bio-review
-specify workflow add --dev .\workflows\bio-research-mvp
-specify workflow run bio-research-mvp `
-  -i spec="Create a bounded MultiQC evidence report for the supplied fixture" `
-  -i multiqc_input=tests/fixtures/multiqc `
-  -i multiqc_output=.bio/runs/current/multiqc `
-  -i multiqc_config=.specify/extensions/bio-multiqc/config/multiqc_config.yaml `
-  -i multiqc_preset=fastqc-multiqc-mvp
+The boundary is intentionally explicit:
+
+```text
+Spec Kit / Preset  → WHAT, WHY, contract, acceptance, evidence, skill binding
+Bio Skills         → HOW: method, tool choice, failure modes, interpretation
+Script / Tool      → deterministic execution
 ```
 
-The workflow uses only the official command, shell, and gate step types. The
-existing `spec-mvp/workflows/multiqc-vertical-slice.yml` remains a design
-reference until the official workflow has been validated locally; it is not
-registered as a Spec Kit workflow.
+Workflow orchestration, autonomous workers, model routing, and the complete
+Extension system are deferred. The broader SkillsBench material and local
+execution experiments remain in the ignored `run-working/` boundary and are
+not part of the GitHub Preset package.
 
-## Evidence contract
+## Minimal artifact contract
 
-Each run should preserve these artifacts under `.bio/runs/<run-id>/`:
+The MVP's primary artifacts are the standard Spec Kit documents:
 
-- `intake/intake-verdict.json`
-- `qc/qc-verdict.json`
-- `pipeline/pipeline-verdict.json`
-- `provenance/provenance.json`
-- `approvals/<stage>.json`
-- `report/`
+- `constitution.md` — durable project principles;
+- `spec.md` — question, scope, requirements, and claim boundary;
+- `plan.md` — research design and required capability bindings;
+- `tasks.md` — concrete work units derived from the plan;
+- `checklist.md` — reviewer-owned acceptance checks.
 
-Approval gates are interactive workflow controls. The approval extension also
-writes explicit, versionable approval records so a decision is not trapped in
-runtime state only.
+The `plan.md` capability binding records `capability`, `skill_id`, `inputs`,
+`outputs`, `constraints`, `acceptance`, and `evidence`. It names the Bio Skill
+needed for the work; it does not contain the Skill's method handbook. Runtime
+reports, logs, run ledgers, and result directories belong to a later execution
+surface, not to this Preset.
 
 ## Design rules
 
-1. Scientific claims must have an evidence artifact.
-2. QC thresholds are configuration, not hidden prompt assumptions.
-3. Statistical design is explicit before result interpretation.
-4. Tool versions, references, parameters, and input hashes are recorded.
-5. Human approval is required before expensive execution and final release.
-6. Failed checks stop the workflow unless a documented waiver is recorded.
+1. Spec Kit owns WHAT, WHY, contract, acceptance, evidence, and skill binding.
+2. Bio Skills own HOW: scientific methods, tools, failure modes, and
+   interpretation.
+3. A Template is an artifact contract, not a method handbook.
+4. `skill_id`, inputs, outputs, constraints, acceptance, and evidence are
+   explicit before a capability is selected or executed.
+5. Deterministic control belongs in an Extension only when Markdown guidance
+   cannot reliably enforce the rule.
+6. Workflow orchestration and worker execution are outside the MVP boundary.
 
 ## Status
 
-This is the first local MVP. It provides a reusable package structure and a
-small deterministic core; assay-specific thresholds and production pipeline
-implementations should be added only after validating the lifecycle on a small
-public dataset.
+This is the first local MVP. It provides a reusable control-plane package and
+an explicit handoff to Bio Skills; assay-specific methods, thresholds, and
+production execution should be added to the capability/execution planes only
+after the corresponding Skill contract is reviewed.

@@ -1,0 +1,53 @@
+schema_version: "1.0"
+
+preset:
+  id: "bio-spec-mvp"
+  name: "BioSpec MVP"
+  version: "0.1.0"
+  description: "Minimal evidence-aware templates for a research specification control plane."
+  author: "Sheldon-Bacchus"
+  repository: "https://github.com/Sheldon-Bacchus/bio-spec-kit"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=0.14.0"
+
+provides:
+  templates:
+    - type: "template"
+      name: "constitution-template"
+      file: "templates/constitution-template.md"
+      description: "Research governance and amendment template"
+      replaces: "constitution-template"
+    - type: "template"
+      name: "spec-template"
+      file: "templates/spec-template.md"
+      description: "Scientific question, scope, evidence boundary, and acceptance template"
+      replaces: "spec-template"
+    - type: "template"
+      name: "plan-template"
+      file: "templates/plan-template.md"
+      description: "Research design, provenance, and project structure template"
+      replaces: "plan-template"
+    - type: "template"
+      name: "tasks-template"
+      file: "templates/tasks-template.md"
+      description: "User-story-oriented implementation and validation task template"
+      replaces: "tasks-template"
+    - type: "template"
+      name: "checklist-template"
+      file: "templates/checklist-template.md"
+      description: "Reviewer-owned requirements quality checklist template"
+      replaces: "checklist-template"
+    - type: "command"
+      name: "speckit.specify"
+      file: "commands/speckit.specify.md"
+      description: "Add evidence-aware research framing to the official specify command"
+      replaces: "speckit.specify"
+      strategy: "append"
+
+tags:
+  - "bioinformatics"
+  - "research"
+  - "evidence"
+  - "mvp"

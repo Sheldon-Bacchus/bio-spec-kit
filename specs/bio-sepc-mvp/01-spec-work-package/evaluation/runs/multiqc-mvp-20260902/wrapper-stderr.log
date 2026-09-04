@@ -1,9 +1,0 @@
-
-/// MultiQC \U0001f50d v1.35
-
-            config | Loading config settings from: E:\all-agent-workspace\codex-projects\bio-skills\bio-spec-kit\extensions\bio-multiqc\config\multiqc_config.yaml
-       file_search | Search path: E:\all-agent-workspace\codex-projects\bio-skills\bio-spec-kit\specs\005-skills-nextflow-research-core\evaluation\cases\multiqc-mvp\inputs
-            fastqc | Found 1 reports
-     write_results | Data        : specs\005-skills-nextflow-research-core\evaluation\runs\multiqc-mvp-20260902\multiqc_report_data
-     write_results | Report      : specs\005-skills-nextflow-research-core\evaluation\runs\multiqc-mvp-20260902\multiqc_report.html
-           multiqc | MultiQC complete

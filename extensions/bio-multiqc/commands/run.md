@@ -27,7 +27,7 @@ fixture preset:
 
     python extensions/bio-multiqc/scripts/run_multiqc.py
       --input tests/fixtures/multiqc
-      --output spec-mvp/artifacts/multiqc-mvp
+      --output .bio/runs/current/multiqc-mvp
       --config extensions/bio-multiqc/config/multiqc_config.yaml
       --multiqc-bin .venv/Scripts/multiqc.exe
       --preset fastqc-multiqc-mvp

@@ -15,4 +15,8 @@ __pycache__/
 tests/smoke-project/
 dist/
 vendor/sources/
-spec-mvp/artifacts/
+prest-spec-mvp/artifacts/
+
+# Local run state, archived experiments, and worker working trees are never
+# part of the publishable Spec Kit source packages.
+run-working/
